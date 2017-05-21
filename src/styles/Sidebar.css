@@ -1,0 +1,6 @@
+.container {
+  width: 33vw;
+  height: 100vh;
+  overflow: auto;
+  background: rgb(131, 128, 93);
+}

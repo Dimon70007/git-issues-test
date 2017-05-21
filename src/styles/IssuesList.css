@@ -1,0 +1,7 @@
+.container {
+  /*background: rgb(235, 223, 223);*/
+  display: block;
+}
+.container ul {
+  list-style: none;
+}

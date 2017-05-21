@@ -1,0 +1,9 @@
+.message {
+  flex:1;
+  height: 100vh;
+  overflow: auto;
+}
+
+.data {
+  padding: 20px;
+}

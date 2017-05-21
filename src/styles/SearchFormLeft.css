@@ -1,0 +1,14 @@
+.form {
+  position: absolute;
+  left: 20px;
+  text-align: right;
+}
+
+.form input {
+  display:block;
+  background-color: rgb(241, 242, 166);
+}
+
+.form button {
+  background-color: rgb(252, 213, 44);
+}
