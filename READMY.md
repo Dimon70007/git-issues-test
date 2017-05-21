@@ -1,1 +1,1 @@
-# git-issues-test
+# git-issues-test with react and redux
