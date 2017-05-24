@@ -40,11 +40,6 @@ class App extends React.PureComponent {
             styles={SearchFormLeftCss}
             onSubmit={onValidData}
           />
-          <SearchForm
-            form='rightSearch'
-            styles={SearchFormRightCss}
-            onSubmit={onValidData}
-          />
           <img
             src={spongeBob}
             className={AppCss['App-logo']}
