@@ -1,12 +1,14 @@
-// import SearchForm from './SearchForm';
+import SearchForm from './SearchForm';
 import ErrorMessage from './ErrorMessage';
 import IssuesList from './IssuesList';
+import RenderField from './RenderField';
 // import Explore from './Explore';
 
 export {
-  // SearchForm,
+  SearchForm,
   ErrorMessage,
   IssuesList,
+  RenderField,
   // Explore,
 };
 

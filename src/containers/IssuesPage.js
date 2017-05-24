@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 // import Message from 'react-message';
 import { addNotification as notify } from 'reapop';
 import Loader from 'react-loader';
-
+import { browserHistory } from 'react-router';
 // import ErrorMessage from '../components/ErrorMessage';
 import { IssuesList } from '../components';
 import loadPath from '../actions/download';
@@ -17,6 +17,7 @@ import { IssuesPageCss, LoaderCss } from '../styles';
 const loadIssues = loadPath(ISSUES_PREFIX);
 
 class IssuesPage extends React.Component {
+
   componentDidMount() {
     this.componentDidUpdate();
   }
@@ -34,10 +35,12 @@ class IssuesPage extends React.Component {
   handleError(error) {
     if (error) {
       const pathname = this.props.pathname;
+      const notLoaded = () => { browserHistory.push('/'); };
       const retry = () => this.getIssues(pathname);
       this.props.notify({
         title: `Can't load path ${pathname}`,
         status: 'error',
+        bacground: 'rgb(180, 215, 236)',
         dismissible: false,
         dismissAfter: 10000,
         message: error.message || 'Path not found',
@@ -47,6 +50,7 @@ class IssuesPage extends React.Component {
           {
             name: 'Ok',
             primary: true,
+            onClick: notLoaded,
           },
           {
             name: 'Retry',

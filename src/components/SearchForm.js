@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // import { bindActionCreators } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 import validateForm from '../reducers/validateForm';
-import RenderField from '../components/RenderField';
+import RenderField from './RenderField';
 
 const SearchForm = (props) => {
   const { styles,

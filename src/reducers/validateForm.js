@@ -3,24 +3,22 @@ const validateForm = (values) => {
   const errors = {};
   // const emailPattern = /(.+)@(.+){2,}\.(.+){2,}/;
   const inputPattern = /^[\w.-]+$/;
-  const keys = Object.keys(values);
+  const keys = ['owner', 'repo'];
   keys.forEach((key) => {
-    // if (!values[key]) {
-    //   errors[key] = `Field ${key} should not be an empty`;
-    // }
+    const value = values[key];
     switch (key) {
       case 'owner':
       case 'repo':
-        if (!inputPattern.test(values[key])) {
-          errors[key] = `Field ${key} may contains chars only: <A-Z a-z 0-9 - _ .>.`;
+        if (!value) {
+          errors[key] = `${key} is required`;
+        } else if (!inputPattern.test(value)) {
+          errors[key] = `Field ${key} may contains only latin chars, nums, "-", "_" and "."`;
         }
-        //  else {
-        //   errors[key] = 'Required';
-        // }
         break;
       default:
         break;
     }
+    console.log(`"${value}"`);
   });
   return errors;
 };
