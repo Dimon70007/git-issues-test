@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch';
+// import fetch from 'isomorphic-fetch';
 import path from 'path';
 
 const url = 'https://api.github.com';

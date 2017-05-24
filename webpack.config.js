@@ -32,7 +32,10 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: [
+          /node_modules/,
+          /src\/store\/config\w*.js/,
+        ],
         enforce: 'pre',
         loader: 'eslint-loader',
       },
@@ -42,18 +45,6 @@ module.exports = {
         use: [
           'url-loader?limit=10000',
           'img-loader',
-        ],
-      },
-      {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: [
-          'url-loader?limit=10000&minetype=application/font-woff',
-        ],
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: [
-          'file-loader',
         ],
       },
       {
@@ -91,6 +82,18 @@ module.exports = {
             },
           },
         }),
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          'url-loader?limit=10000&minetype=application/font-woff',
+        ],
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: [
+          'file-loader',
+        ],
       },
     ],
   },

@@ -1,17 +1,16 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 import { reducer as notificationsReducer } from 'reapop';
-// import counterReducer from './counter';
 import downloadReducer from './download';
-// import repoReducer from './repo';
-import { ISSUE_PREFIX } from '../constants';
+import { ISSUES_PREFIX, PREFIX_ISSUE } from '../constants';
 
 const reducer = combineReducers({
   routing: routerReducer, // => state.routing
-  notifications: notificationsReducer(),
-  // repo: repoReducer, // => state.repo
-  // counter: counterReducer, // => state.counter
-  issues: downloadReducer(ISSUE_PREFIX), // => state.issues
+  form: formReducer, // => state.form
+  notifications: notificationsReducer(), // => state.notifications
+  issues: downloadReducer(ISSUES_PREFIX), // => state.issues
+  issue: downloadReducer(PREFIX_ISSUE), // => state.issue
 });
 
 export default reducer;

@@ -9,12 +9,12 @@ import Loader from 'react-loader';
 // import ErrorMessage from '../components/ErrorMessage';
 import { IssuesList } from '../components';
 import loadPath from '../actions/download';
-import { ISSUE_PREFIX } from '../constants';
+import { ISSUES_PREFIX } from '../constants';
 
 import { IssuesPageCss, LoaderCss } from '../styles';
 // import { ErrorMessageCss } from '../styles';
 
-const loadIssues = loadPath(ISSUE_PREFIX);
+const loadIssues = loadPath(ISSUES_PREFIX);
 
 class IssuesPage extends React.Component {
   componentDidMount() {

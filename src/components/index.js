@@ -1,10 +1,10 @@
-import SearchForm from './SearchForm';
+// import SearchForm from './SearchForm';
 import ErrorMessage from './ErrorMessage';
 import IssuesList from './IssuesList';
 // import Explore from './Explore';
 
 export {
-  SearchForm,
+  // SearchForm,
   ErrorMessage,
   IssuesList,
   // Explore,

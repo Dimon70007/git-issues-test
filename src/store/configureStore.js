@@ -1,9 +1,7 @@
 
 import { createStore, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
-import thunk from 'redux-thunk';
-// import {reducer as formReducer} from 'redux-form';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk'; import { composeWithDevTools } from 'redux-devtools-extension';
 import reducers from '../reducers';
 import promisesMiddleware from '../middleware/promises';
 
@@ -12,7 +10,6 @@ const logger = createLogger();
 const configureStore = (preloadedState) => {
   const store = createStore(
     reducers,
-    // formReducer,
     preloadedState,
     composeWithDevTools(
       applyMiddleware(logger, thunk, promisesMiddleware)),

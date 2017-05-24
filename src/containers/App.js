@@ -1,14 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import theme from 'reapop-theme-wybo';
+// import '!style-loader!css-loader!font-awesome/css/font-awesome.min.css';
 import NotificationSystem from 'reapop';
+import theme from 'reapop-theme-wybo';
+import path from 'path';
 import spongeBob from '../sponge_bob.jpg';
-import { SearchForm } from '../components';
+import SearchForm from '../components/SearchForm';
 import { AppCss, SearchFormLeftCss, SearchFormRightCss } from '../styles';
 
 const handleOnSearch = (newPath) => {
   browserHistory.push(newPath);
+};
+
+const makePath = (...params) =>
+  path.resolve(...params).toString();
+
+const onValidData = (values) => {
+  const { owner, repo } = values;
+  const prefix = 'repos';
+  const postfix = 'issues';
+  if (owner && repo) {
+    const gitPath = makePath(
+      prefix, owner, repo, postfix);
+    handleOnSearch(gitPath);
+  } else {
+    console.log(values);
+  }
 };
 
 class App extends React.PureComponent {
@@ -18,16 +36,14 @@ class App extends React.PureComponent {
         <NotificationSystem theme={theme} />
         <div className={AppCss['App-header']}>
           <SearchForm
+            form='leftSearch'
             styles={SearchFormLeftCss}
-            onSearch={handleOnSearch}
-            prefix='repos'
-            postfix='issues'
+            onSubmit={onValidData}
           />
           <SearchForm
+            form='rightSearch'
             styles={SearchFormRightCss}
-            onSearch={handleOnSearch}
-            prefix='repos'
-            postfix='issues'
+            onSubmit={onValidData}
           />
           <img
             src={spongeBob}
@@ -46,4 +62,5 @@ class App extends React.PureComponent {
 App.propTypes = {
   children: PropTypes.node,
 };
+
 export default App;

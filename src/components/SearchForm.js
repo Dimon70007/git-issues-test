@@ -1,61 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import path from 'path';
+// import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+import { Field, reduxForm } from 'redux-form';
+import validateForm from '../reducers/validateForm';
+import RenderField from '../components/RenderField';
 
-const makePath = (...params) =>
-  path.resolve(...params).toString();
-// function validation(values) {
-//   const errors = {};
-//   const emailPattern = /(.+)@(.+){2,}\.(.+){2,}/;
-//   if (!emailPattern.test(values.email)) {
-//     errors.email = 'Enter a valid email';
-//   }
-//
-//   return errors;
-// }
 const SearchForm = (props) => {
-  const prefix = props.prefix || '';
-  const postfix = props.postfix || '';
-  let repo = '';
-  let owner = '';
+  const { styles,
+    pristine,
+    submitting,
+    // reset,
+    handleSubmit,
+    invalid,
+  } = props;
 
-  const onSubmit = (event) => {
-    event.preventDefault();
-    // ToDo validation
-    if (!owner.value || !repo.value) {
-      return;
-    }
-    const gitPath = makePath(prefix, owner.value, repo.value, postfix);
-    props.onSearch(gitPath);
-  };
-
-  return (<div>
-    <form className={props.styles.form} onSubmit={onSubmit}>
-      <legend>Search</legend>
-      <input
-        type='text'
-        name='owner'
-        defaultValue=''
-        placeholder='owner'
-        ref={input => (owner = input)}
-      />
-      <input
-        type='text'
-        name='repo'
-        defaultValue=''
-        placeholder='repo'
-        ref={input => (repo = input)}
-      />
-      <button type='submit'>Search issues</button>
-    </form>
-  </div>);
+  return (
+    <div className={styles.form}>
+      <form onSubmit={handleSubmit}>
+        <legend>Search. </legend>
+        <Field name='owner' type='text' component={RenderField} label='owner' />
+        <Field name='repo' component={RenderField} type='text' label='repo' />
+        <div>
+          <button type='submit' disabled={submitting || pristine || invalid}>Search issues</button>
+          {/* <button
+            type='button'
+            disabled={pristine || submitting}
+            onClick={reset}
+          >Clear values</button> */}
+        </div>
+      </form>
+    </div>);
 };
 
 SearchForm.propTypes = {
-  onSearch: PropTypes.func.isRequired,
+  pristine: PropTypes.bool,
+  invalid: PropTypes.bool,
+  submitting: PropTypes.bool,
+  handleSubmit: PropTypes.func.isRequired,
+  // reset: PropTypes.func.isRequired,
   styles: PropTypes.object.isRequired,
-  prefix: PropTypes.string,
-  postfix: PropTypes.string,
 };
 
-export default SearchForm;
+export default reduxForm({
+  validate: validateForm,
+})(SearchForm);

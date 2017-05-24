@@ -15,6 +15,7 @@ const middleware = store => next => (action) => {
     if (response.status >= 400) {
       throw new Error('Bad response from server');
     }
+    // console.log('response.headers ', response.headers.get());
     return response.json();
   })
   .then(payload => store.dispatch({
