@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  /*background: url(./background/clean_textile.png);*/
+  background: url(./background/clean_textile.png);
 }
 
 .App {
@@ -17,7 +17,7 @@ body {
 .App-header {
   position: relative;
   background-color: white;
-  height: 80px;
+  height: auto;
   padding: 20px;
   border-bottom: 1px solid rgb(53, 235, 241);
 }

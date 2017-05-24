@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 
 const RenderField = ({ input, label, type, meta: { touched, error /* , warning */ } }) => (
   <div>
-    <input {...input} placeholder={label} type={type} />
+    <div>
+      <input {...input} placeholder={label} type={type} />
+    </div>
     {touched &&
-      ((error && <span style={{ color: '#aaa' }}>{error}</span>)
+      ((error && <span style={{ color: '#999' }}>{error}</span>)
         // || (warning && <span>{warning}</span>)
       )
     }

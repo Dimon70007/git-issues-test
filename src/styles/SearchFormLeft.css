@@ -1,14 +1,17 @@
 .form {
   position: absolute;
   left: 20px;
-  text-align: right;
+  text-align: left;
+  margin-left: 20px;
 }
 
 .form input {
+  padding-left: 0;
   display:block;
-  background-color: rgb(241, 242, 166);
+  background-color: rgba(180, 215, 236, 0.5);
 }
 
 .form button {
-  background-color: rgb(252, 213, 44);
+  background-color: rgb(68, 179, 246);
+  color: white;
 }
