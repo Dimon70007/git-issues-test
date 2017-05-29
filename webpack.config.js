@@ -40,11 +40,17 @@ module.exports = {
         loader: 'eslint-loader',
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        exclude: /node_modules/,
+        test: /\.(jpe?g|png|svg)$/i,
+        // exclude: /node_modules/,
         use: [
           'url-loader?limit=10000',
           'img-loader',
+        ],
+      },
+      {
+        test: /\.gif$/,
+        use: [
+          'url-loader?limit=10000&mimetype=image/png',
         ],
       },
       {
@@ -86,13 +92,13 @@ module.exports = {
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
-          'url-loader?limit=10000&minetype=application/font-woff',
+          'url-loader?limit=10000&mimetype=application/font-woff',
         ],
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
-          'file-loader',
+          'file-loader?name=[name].[ext]',
         ],
       },
     ],

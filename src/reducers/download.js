@@ -13,7 +13,8 @@ const downloadReducer = prefix => (state = initState, action) => {
       };
     case loaded:
       return {
-        payload: action.payload,
+        response: action.payload.response,
+        headers: action.payload.headers,
       };
     case loadFailure:
       return {

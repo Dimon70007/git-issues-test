@@ -14,24 +14,35 @@ import { ISSUES_PREFIX } from '../constants';
 import { IssuesPageCss, LoaderCss } from '../styles';
 // import { ErrorMessageCss } from '../styles';
 
-const loadIssues = loadPath(ISSUES_PREFIX);
-
 class IssuesPage extends React.Component {
 
-  componentDidMount() {
-    this.componentDidUpdate();
+  componentWillMount() {
+    const query = this.props.query;
+    const pathname = this.props.pathname;
+    this.getIssues(pathname, query);
   }
 
-  componentDidUpdate(prevProps) {
-    const prevPath = prevProps && prevProps.pathname;
-    const nextPath = this.props.pathname;
-    if (prevPath !== nextPath) {
-      this.getIssues(nextPath);
+
+  componentWillReceiveProps(nextProps) {
+    console.log('nextProps ', nextProps);
+    const nextSearch = nextProps.search;
+    const nextPath = nextProps.pathname;
+    const prevSearch = this.props.search;
+    const prevPath = this.props.pathname;
+    if (prevPath !== nextPath || prevSearch !== nextSearch) {
+      this.getIssues(nextPath, nextProps.query);
     }
   }
-  getIssues(newPath) {
-    this.props.loadIssuesFromServer(newPath);
+
+  getIssues(pathname, query) {
+    this.props.loadIssuesFromServer(pathname, query);
+    console.log('pathname', pathname);
+    console.log('query', query);
+    console.log('this.props.query', this.props.query);
+    const error = this.props.error;
+    this.handleError(error);
   }
+
   handleError(error) {
     if (error) {
       const pathname = this.props.pathname;
@@ -64,23 +75,31 @@ class IssuesPage extends React.Component {
 
   render() {
     const issues = this.props.issues;
+    console.log(issues);
     const message = this.props.message;
     const error = this.props.error;
-    this.handleError(error);
     const loaded = !message;
     const listIssues = loaded ? issues : [];
-    return (
+    const data = (
       <div className={IssuesPageCss.container}>
         <Loader loaded={loaded} className={LoaderCss.container}>
           <IssuesList pathname={this.props.pathname}>
             {listIssues}
           </IssuesList>
+          {/* <Link to={pathname} */}
         </Loader>
       </div>
     );
+    return error ? '' : data;
   // номера, названия, даты открытия.
   }
 }
+
+// const pagePropTypes = PropTypes.shape({
+//   page: PropTypes.string,
+//   per_page: PropTypes.string,
+//   url: PropTypes.string,
+// });
 
 IssuesPage.propTypes = {
   issues: PropTypes.arrayOf(
@@ -91,6 +110,10 @@ IssuesPage.propTypes = {
         id: PropTypes.number,
       }),
   ),
+  // params: pagePropTypes,
+  // nextPage: pagePropTypes,
+  // prevPage: pagePropTypes,
+  // lastPage: pagePropTypes,
   message: PropTypes.string,
   error: PropTypes.object,
   notify: PropTypes.func.isRequired,
@@ -99,11 +122,20 @@ IssuesPage.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  issues: state.issues.payload,
+  issues: state.issues.response,
   error: state.issues.error,
   message: state.issues.message,
   pathname: ownProps.location.pathname,
+  search: ownProps.location.search,
+  query: ownProps.location.query,
+  // params: state.params.isRequired,
+  // nextPage: state.issues.headers.Link.next,
+  // prevPage: state.issues.headers.Link.prev,
+  // lastPage: state.issues.headers.Link.last,
 });
+
+
+const loadIssues = loadPath(ISSUES_PREFIX);
 
 const mapDispatchToProps = dispatch => ({
   loadIssuesFromServer: bindActionCreators(loadIssues, dispatch),

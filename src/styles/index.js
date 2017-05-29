@@ -9,6 +9,16 @@ import IssuesPageCss from './IssuesPage.css';
 import IssueItemCss from './IssueItem.css';
 import ErrorMessageCss from './ErrorMessage.css';
 import LoaderCss from './Loader.css';
+import SettingsCss from './Settings.css';
 
-export { AppCss, SearchFormRightCss, SearchFormLeftCss, LoaderCss };
-export { IssuesListCss, IssuesPageCss, IssueItemCss, ErrorMessageCss };
+export {
+  AppCss,
+  SearchFormRightCss,
+  SearchFormLeftCss,
+  LoaderCss,
+  SettingsCss,
+  IssuesListCss,
+  IssuesPageCss,
+  IssueItemCss,
+  ErrorMessageCss,
+};

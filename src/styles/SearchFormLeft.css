@@ -15,3 +15,8 @@
   background-color: rgb(68, 179, 246);
   color: white;
 }
+
+.form button:disabled {
+  background-color: rgba(68, 179, 246, 0.5);
+  color: white;
+}

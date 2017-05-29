@@ -1,0 +1,28 @@
+.container {
+  background: rgba(68, 179, 246, 0.5);
+  color: #fff;
+  border-radius: 5px;
+  float: right;
+  margin: 10px;
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+.container select {
+  font-size: 100%;
+  appearance: none;
+  background: rgba(68, 179, 246, 0.5);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.5);
+  margin-left: 10px;
+  border-radius: 5px;
+}
+.container option {
+  appearance: none;
+  font-size: 100%;
+  }
+.container option:checked,
+.container select option:hover {
+  background: rgb(68, 179, 246);
+  color: #fff;
+}

@@ -1,4 +1,5 @@
-import { PROMISE } from '../constants';
+// import parse from 'parse-link-header';
+import { PROMISE /* SET_HEADERS*/ } from '../constants';
 
 const middleware = store => next => (action) => {
   if (action.type !== PROMISE) {
@@ -16,12 +17,20 @@ const middleware = store => next => (action) => {
       throw new Error('Bad response from server');
     }
     // console.log('response.headers ', response.headers.get());
+    // const Link = response.headers.get('Link');
+    // console.log(Link);
+    // const parsedLink = parse(Link);
+    // console.log(parsedLink);
+    // store.dispatch({
+    //   type: SET_HEADERS,
+    //   payload: parsedLink,
+    // });
     return response.json();
   })
-  .then(payload => store.dispatch({
+  .then(response => store.dispatch({
     type: successAction,
     path: newPath,
-    payload,
+    payload: { response },
   }), error => store.dispatch({
     type: failureAction,
     path: newPath,
