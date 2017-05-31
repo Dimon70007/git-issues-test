@@ -4,7 +4,8 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgb(180, 215, 236);
+  margin: 0;
+  padding: 0;
+  background: white;
   z-index: 9999;
-  /*color: rgb(180, 215, 236);*/
 }

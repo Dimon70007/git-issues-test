@@ -12,10 +12,8 @@ const downloadReducer = prefix => (state = initState, action) => {
         message: `${loading}...`,
       };
     case loaded:
-      return {
-        response: action.payload.response,
-        headers: action.payload.headers,
-      };
+      console.log(action.payload);
+      return action.payload;
     case loadFailure:
       return {
         error: action.error,

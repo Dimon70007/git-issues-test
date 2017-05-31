@@ -6,13 +6,12 @@ import { bindActionCreators } from 'redux';
 import { addNotification as notify } from 'reapop';
 import Loader from 'react-loader';
 import { browserHistory } from 'react-router';
-// import ErrorMessage from '../components/ErrorMessage';
 import { IssuesList } from '../components';
+import Pages from '../components/Pages';
 import loadPath from '../actions/download';
 import { ISSUES_PREFIX } from '../constants';
 
 import { IssuesPageCss, LoaderCss } from '../styles';
-// import { ErrorMessageCss } from '../styles';
 
 class IssuesPage extends React.Component {
 
@@ -22,8 +21,7 @@ class IssuesPage extends React.Component {
     this.getIssues(pathname, query);
   }
 
-
-  componentWillReceiveProps(nextProps) {
+  componentWillUpdate(nextProps) {
     console.log('nextProps ', nextProps);
     const nextSearch = nextProps.search;
     const nextPath = nextProps.pathname;
@@ -35,10 +33,10 @@ class IssuesPage extends React.Component {
   }
 
   getIssues(pathname, query) {
-    this.props.loadIssuesFromServer(pathname, query);
     console.log('pathname', pathname);
     console.log('query', query);
     console.log('this.props.query', this.props.query);
+    this.props.loadIssuesFromServer(pathname, query);
     const error = this.props.error;
     this.handleError(error);
   }
@@ -74,64 +72,61 @@ class IssuesPage extends React.Component {
   }
 
   render() {
-    const issues = this.props.issues;
-    console.log(issues);
-    const message = this.props.message;
-    const error = this.props.error;
+    const { issues, message, error, pages, pathname } = this.props;
+    console.log('pages ', pages);
+    console.log('issues', issues);
     const loaded = !message;
     const listIssues = loaded ? issues : [];
     const data = (
       <div className={IssuesPageCss.container}>
         <Loader loaded={loaded} className={LoaderCss.container}>
-          <IssuesList pathname={this.props.pathname}>
+          <IssuesList pathname={pathname}>
             {listIssues}
           </IssuesList>
-          {/* <Link to={pathname} */}
         </Loader>
+        <Pages pages={pages} pathname={pathname} />
       </div>
     );
-    return error ? '' : data;
+    return error ? error.message : data;
   // номера, названия, даты открытия.
   }
 }
-
-// const pagePropTypes = PropTypes.shape({
-//   page: PropTypes.string,
-//   per_page: PropTypes.string,
-//   url: PropTypes.string,
-// });
-
+const page = PropTypes.shape({
+  rel: PropTypes.string,
+  url: PropTypes.string,
+});
 IssuesPage.propTypes = {
   issues: PropTypes.arrayOf(
-      PropTypes.shape({
-        title: PropTypes.string,
-        number: PropTypes.number,
-        created_at: PropTypes.string,
-        id: PropTypes.number,
-      }),
+        PropTypes.shape({
+          title: PropTypes.string,
+          number: PropTypes.number,
+          created_at: PropTypes.string,
+          id: PropTypes.number,
+        }),
   ),
-  // params: pagePropTypes,
-  // nextPage: pagePropTypes,
-  // prevPage: pagePropTypes,
-  // lastPage: pagePropTypes,
+  pages: PropTypes.shape({
+    next: page,
+    prev: page,
+    first: page,
+    last: page,
+  }),
+  search: PropTypes.string.isRequired,
+  query: PropTypes.object.isRequired,
   message: PropTypes.string,
   error: PropTypes.object,
   notify: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
   loadIssuesFromServer: PropTypes.func.isRequired,
 };
-
+const getPages = (headers = { Link: {} }) => headers.Link;
 const mapStateToProps = (state, ownProps) => ({
-  issues: state.issues.response,
+  issues: state.issues.body,
   error: state.issues.error,
   message: state.issues.message,
+  pages: getPages(state.issues.headers),
   pathname: ownProps.location.pathname,
   search: ownProps.location.search,
   query: ownProps.location.query,
-  // params: state.params.isRequired,
-  // nextPage: state.issues.headers.Link.next,
-  // prevPage: state.issues.headers.Link.prev,
-  // lastPage: state.issues.headers.Link.last,
 });
 
 

@@ -11,3 +11,5 @@ export default (urlPath, params) => {
     }), {});
   return url.format({ ...urlObj, query, search: null });
 };
+
+export const parseLink = linkUrl => url.parse(linkUrl, true);
