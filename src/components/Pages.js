@@ -13,7 +13,7 @@ const link = (page = {}, pathname) => {
   console.log('pathnameWithQuery', pathnameWithQuery);
   console.log('page.rel', page.rel);
   return (
-    <Link to={pathnameWithQuery} disabled={!!page.rel}>
+    <Link to={pathnameWithQuery} >
       {page.rel.toUpperCase()}
     </Link>
   );

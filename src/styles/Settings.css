@@ -1,10 +1,12 @@
 .container {
   background: rgba(68, 179, 246, 0.5);
   color: #fff;
-  border-radius: 5px;
+  border-radius: 10px;
   float: right;
   margin: 5px;
-  padding: 10px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .container select {
