@@ -6,11 +6,21 @@ import IssueItemCss from '../styles/IssueItem.css';
 
 const IssueItem = (props) => {
   const pathname = path.join(props.pathname, String(props.issue.number));
+  const date = new Date(props.issue.created_at);
+  const dateOptions = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timezone: 'UTC',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  };
   return (
     <div className={IssueItemCss.container}>
       <Link to={pathname} >
-        <h4>{props.issue.title}</h4>
-        <p>#{props.issue.number} created_at: {props.issue.created_at}</p>
+        <p>#{props.issue.number} created_at: {date.toLocaleString('en', dateOptions)}</p>
+        <p>{props.issue.title}</p>
       </Link>
     </div>
   );

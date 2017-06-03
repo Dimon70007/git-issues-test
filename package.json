@@ -47,6 +47,8 @@
     "babel-runtime": "^6.23.0",
     "font-awesome": "^4.7.0",
     "isomorphic-fetch": "^2.2.1",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.4",
     "parse-link-header": "^1.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

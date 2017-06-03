@@ -10,8 +10,6 @@ const link = (page = {}, pathname) => {
   }
   const { query } = parseLink(page.url);
   const pathnameWithQuery = { pathname, query };
-  console.log('pathnameWithQuery', pathnameWithQuery);
-  console.log('page.rel', page.rel);
   return (
     <Link to={pathnameWithQuery} >
       {page.rel.toUpperCase()}
@@ -19,14 +17,17 @@ const link = (page = {}, pathname) => {
   );
 };
 
-const Pages = ({ pages = { first: {}, prev: {}, next: {}, last: {} }, pathname }) =>
-  (<div className={PagesCss.container}>
+const Pages = ({ pages, pathname }) => {
+  if (!pages) {
+    return null;
+  }
+  return (<div className={PagesCss.container}>
     {link(pages.first, pathname)}
     {link(pages.prev, pathname)}
     {link(pages.next, pathname)}
     {link(pages.last, pathname)}
-  </div>
-);
+  </div>);
+};
 
 const page = PropTypes.shape({
   rel: PropTypes.string,

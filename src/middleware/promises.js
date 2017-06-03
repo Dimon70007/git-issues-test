@@ -18,9 +18,7 @@ const middleware = store => next => (action) => {
       throw new Error('Bad response from server');
     }
     const Link = response.headers.get('link');
-    console.log('Link', Link);
     const parsedLink = parse(Link);
-    console.log('parsedLink', parsedLink);
     headers.Link = parsedLink;
     return response.json();
   })

@@ -2,27 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import Message from 'react-message';
-import { addNotification as notify } from 'reapop';
+import { addNotification as notification } from 'reapop';
 import Loader from 'react-loader';
 import { browserHistory } from 'react-router';
-import { IssuesList } from '../components';
-import Pages from '../components/Pages';
+import { IssuesList, Pages } from '../components';
 import loadPath from '../actions/download';
 import { ISSUES_PREFIX } from '../constants';
 
 import { IssuesPageCss, LoaderCss } from '../styles';
 
 class IssuesPage extends React.Component {
-
-  componentWillMount() {
-    const query = this.props.query;
-    const pathname = this.props.pathname;
+  constructor(props) {
+    super(props);
+    const query = props.query;
+    const pathname = props.pathname;
     this.getIssues(pathname, query);
   }
 
   componentWillUpdate(nextProps) {
-    console.log('nextProps ', nextProps);
     const nextSearch = nextProps.search;
     const nextPath = nextProps.pathname;
     const prevSearch = this.props.search;
@@ -30,20 +27,20 @@ class IssuesPage extends React.Component {
     if (prevPath !== nextPath || prevSearch !== nextSearch) {
       this.getIssues(nextPath, nextProps.query);
     }
+    const { message: prevMessage } = this.props.error || {};
+    const { message: nextMessage } = nextProps.error || {};
+    if (prevMessage !== nextMessage) {
+      const pathname = nextProps.pathname;
+      this.handleError(nextProps.error, pathname);
+    }
   }
 
   getIssues(pathname, query) {
-    console.log('pathname', pathname);
-    console.log('query', query);
-    console.log('this.props.query', this.props.query);
     this.props.loadIssuesFromServer(pathname, query);
-    const error = this.props.error;
-    this.handleError(error);
   }
 
-  handleError(error) {
-    if (error) {
-      const pathname = this.props.pathname;
+  handleError(error = {}, pathname) {
+    if (error.message) {
       const notLoaded = () => { browserHistory.push('/'); };
       const retry = () => this.getIssues(pathname);
       this.props.notify({
@@ -73,11 +70,12 @@ class IssuesPage extends React.Component {
 
   render() {
     const { issues, message, error, pages, pathname } = this.props;
-    console.log('pages ', pages);
-    console.log('issues', issues);
+    if (error) {
+      return null;
+    }
     const loaded = !message;
     const listIssues = loaded ? issues : [];
-    const data = (
+    return (
       <div className={IssuesPageCss.container}>
         <Loader loaded={loaded} className={LoaderCss.container}>
           <IssuesList pathname={pathname}>
@@ -87,7 +85,6 @@ class IssuesPage extends React.Component {
         <Pages pages={pages} pathname={pathname} />
       </div>
     );
-    return error ? error.message : data;
   // номера, названия, даты открытия.
   }
 }
@@ -134,7 +131,7 @@ const loadIssues = loadPath(ISSUES_PREFIX);
 
 const mapDispatchToProps = dispatch => ({
   loadIssuesFromServer: bindActionCreators(loadIssues, dispatch),
-  notify: bindActionCreators(notify, dispatch),
+  notify: bindActionCreators(notification, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IssuesPage);

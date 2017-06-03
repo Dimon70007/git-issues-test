@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RenderField = ({ input, label, type, meta: { touched, error /* , warning */ } }) => (
-  <div>
+const RenderField = ({
+  input, className, containerClass, label, type, meta: { touched, error /* , warning */ } }) => (
     <div>
-      <input {...input} placeholder={label} type={type} />
+      <div className={containerClass}>
+        <input {...input} className={className} placeholder={label} type={type} />
+      </div>
+      {touched &&
+        ((error && <span style={{ color: '#999' }}>{error}</span>)
+          // || (warning && <span>{warning}</span>)
+        )
+      }
     </div>
-    {touched &&
-      ((error && <span style={{ color: '#999' }}>{error}</span>)
-        // || (warning && <span>{warning}</span>)
-      )
-    }
-  </div>
 );
 
 RenderField.propTypes = {

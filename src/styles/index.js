@@ -7,12 +7,13 @@ import SearchFormLeftCss from './SearchFormLeft.css';
 import IssuesListCss from './IssuesList.css';
 import IssuesPageCss from './IssuesPage.css';
 import IssueItemCss from './IssueItem.css';
-import ErrorMessageCss from './ErrorMessage.css';
 import LoaderCss from './Loader.css';
 import SettingsCss from './Settings.css';
 import PagesCss from './Pages.css';
+import WidgetsLess from './Widgets.less';
 
 export {
+  WidgetsLess,
   PagesCss,
   AppCss,
   SearchFormRightCss,
@@ -22,5 +23,4 @@ export {
   IssuesListCss,
   IssuesPageCss,
   IssueItemCss,
-  ErrorMessageCss,
 };

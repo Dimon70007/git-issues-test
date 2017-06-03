@@ -1,22 +1,24 @@
 .form {
-  position: absolute;
-  left: 20px;
+  display: block;
   text-align: left;
-  margin-left: 20px;
 }
 
-.form input {
-  padding-left: 0;
-  display:block;
-  background-color: rgba(180, 215, 236, 0.5);
+input {
+  width: 100%;
 }
 
-.form button {
+.submit {
+  float:right;
+  box-sizing: border-box;
+}
+.submit button {
   background-color: rgb(68, 179, 246);
   color: white;
+  height: 2.286em;
+  border-radius: 4px;
+  opacity: 1;
 }
 
-.form button:disabled {
-  background-color: rgba(68, 179, 246, 0.5);
-  color: white;
+.submit button:disabled {
+    opacity: 0.5;
 }

@@ -9,6 +9,7 @@ const validateForm = (values) => {
     switch (key) {
       case 'owner':
       case 'repo':
+      case 'repo1':
         if (!value) {
           errors[key] = `${key} is required`;
         } else if (!inputPattern.test(value)) {
@@ -18,7 +19,6 @@ const validateForm = (values) => {
       default:
         break;
     }
-    console.log(`"${value}"`);
   });
   return errors;
 };

@@ -1,14 +1,13 @@
 
 .container {
   width: auto;
-  height: 100px;
+  height: 80px;
   overflow: hidden;
   background: rgb(180, 215, 236);
-  /*border: 1px solid white;*/
-  padding-left: 20px;
-  padding-bottom: 20px;
-  border-radius: 5px 5px 10px 10px;
+  border: 1px solid white;
   margin: 10px;
+  padding-left: 20px;
+  border-radius: 5px 5px 10px 10px;
   text-align: left;
   cursor: pointer;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25),
@@ -23,7 +22,10 @@
 .container a:link {
   color: white;
 }
-
+.container p {
+  padding: 5px;
+  margin: 0;
+}
 .container a:visited {
   color: rgb(255, 161, 115);
 }
@@ -31,7 +33,7 @@
 .container::after {
   content: '';
   width: auto;
-  height: 100px;
+  height: 80px;
   display: block;
   opacity: 0.7;
 }

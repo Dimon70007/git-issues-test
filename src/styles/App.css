@@ -1,6 +1,6 @@
 body {
-  margin: 0;
-  padding: 0;
+  /*margin: 0;
+  padding: 0;*/
   font-family: sans-serif;
   background: url(./background/clean_textile.png);
 }
@@ -12,19 +12,25 @@ body {
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
+  margin-bottom: auto;
 }
 
 .App-header {
+  display: block;
   position: relative;
   background-color: white;
-  height: auto;
-  padding: 20px;
-  border-bottom: 1px solid rgb(53, 235, 241);
+  width: 200px;
+  height: 100vh;
+  overflow: auto;
+  padding: 10px;
+  border-right: 1px solid rgb(53, 235, 241);
 }
 
 .App-intro {
   font-size: large;
-  position: relative;
+  flex:1;
+  height: 100vh;
+  overflow: auto;
   display: block;
 }
 
