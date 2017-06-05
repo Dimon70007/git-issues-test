@@ -6,10 +6,11 @@ const middleware = store => next => (action) => {
     return next(action);
   }
   const [startAction, successAction, failureAction] = action.actions;
-  const newPath = action.path;
+  const { path, query } = action;
   store.dispatch({
     type: startAction,
-    path: newPath,
+    path,
+    query,
   });
   const headers = {};
   action.promise
@@ -24,14 +25,14 @@ const middleware = store => next => (action) => {
   })
   .then(body => store.dispatch({
     type: successAction,
-    path: newPath,
+    path,
     payload: {
       body,
       headers,
     },
   }), error => store.dispatch({
     type: failureAction,
-    path: newPath,
+    path,
     error,
   }));
   return next(action);

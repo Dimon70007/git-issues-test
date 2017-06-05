@@ -1,31 +1,37 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, reduxForm, blur, submit } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 import { Combobox } from 'react-widgets';
 import validateForm from '../reducers/validateForm';
 import RenderField from './RenderField';
 import { WidgetsLess } from '../styles';
 
-const renderCombobox = ({ input, field, label, meta: { touched, error }, ...rest }) =>
-  (<div>
+function renderCombobox({ input, reposLoaded, meta, ...rest }) {
+  return (<div>
     <Combobox
       {...input}
-      value={input.value}
+      busy={meta.visited && !reposLoaded}
       placeholder={input.name}
-      onBlur={input.onBlur}
       {...rest}
     />
-    {touched &&
-      ((error && <span style={{ color: '#999' }}>{error}</span>)
+    {meta.touched &&
+      ((meta.error && <span style={{ color: '#999' }}>{meta.error}</span>)
           // || (warning && <span>{warning}</span>)
       )}
   </div>);
+}
 
 const SearchForm = (props) => {
-  const { styles,
+  const {
+    styles,
     pristine,
     submitting,
     handleSubmit,
+    onOwnerBlur,
+    repos,
+    reposLoaded,
+    // change,
+    submit,
     invalid,
   } = props;
   return (
@@ -33,19 +39,27 @@ const SearchForm = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           <div className={WidgetsLess.wrap}>
-            <Field containerClass='rw-widget' className='rw-input' name='owner' type='text' component={RenderField} label='owner' />
+            <Field
+              containerClass='rw-widget'
+              className='rw-input'
+              name='owner'
+              component={RenderField}
+              onOwnerBlur={onOwnerBlur}
+            />
             {/* <Field name='repo' component={RenderField} type='text' label='repo' /> */}
             <Field
               name='repo'
               component={renderCombobox}
-              data={['repo1', 'repo2', 'repo3', 'repo4', 'redux-app1']}
+              data={repos}
               required
-              filter='startsWith'
-              onSelect={(value) => {
-                props.change('repo', value);
-                console.log('value ', value);
-                props.submit('leftSearch');
+              reposLoaded={reposLoaded}
+              onSelect={(/* value*/) => {
+                // props.change('repo', value);
+                setTimeout(() => submit('leftSearch'));
               }}
+
+              filter='startsWith'
+              // handleSubmit={handleSubmit}
             />
           </div>
         </div>
@@ -60,12 +74,13 @@ SearchForm.propTypes = {
   pristine: PropTypes.bool,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,
+  repos: PropTypes.arrayOf(PropTypes.string),
   handleSubmit: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired,
+  onOwnerBlur: PropTypes.func.isRequired,
   styles: PropTypes.object.isRequired,
 };
+
 export default reduxForm({
   validate: validateForm,
-  changeField: (field, value) => {
-    blur('leftSearch', field, value);
-  },
 })(SearchForm);

@@ -6,9 +6,7 @@ import { addNotification as notification } from 'reapop';
 import Loader from 'react-loader';
 import { browserHistory } from 'react-router';
 import { IssuesList, Pages } from '../components';
-import loadPath from '../actions/download';
-import { ISSUES_PREFIX } from '../constants';
-
+import { downloadIssues } from '../actions';
 import { IssuesPageCss, LoaderCss } from '../styles';
 
 class IssuesPage extends React.Component {
@@ -36,7 +34,7 @@ class IssuesPage extends React.Component {
   }
 
   getIssues(pathname, query) {
-    this.props.loadIssuesFromServer(pathname, query);
+    this.props.loadIssues(pathname, query);
   }
 
   handleError(error = {}, pathname) {
@@ -92,6 +90,7 @@ const page = PropTypes.shape({
   rel: PropTypes.string,
   url: PropTypes.string,
 });
+
 IssuesPage.propTypes = {
   issues: PropTypes.arrayOf(
         PropTypes.shape({
@@ -113,9 +112,11 @@ IssuesPage.propTypes = {
   error: PropTypes.object,
   notify: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
-  loadIssuesFromServer: PropTypes.func.isRequired,
+  loadIssues: PropTypes.func.isRequired,
 };
+
 const getPages = (headers = { Link: {} }) => headers.Link;
+
 const mapStateToProps = (state, ownProps) => ({
   issues: state.issues.body,
   error: state.issues.error,
@@ -127,10 +128,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 
-const loadIssues = loadPath(ISSUES_PREFIX);
-
 const mapDispatchToProps = dispatch => ({
-  loadIssuesFromServer: bindActionCreators(loadIssues, dispatch),
+  loadIssues: bindActionCreators(downloadIssues, dispatch),
   notify: bindActionCreators(notification, dispatch),
 });
 
