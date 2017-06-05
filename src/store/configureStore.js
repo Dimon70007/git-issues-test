@@ -12,7 +12,7 @@ const configureStore = (preloadedState) => {
     reducers,
     preloadedState,
     composeWithDevTools(
-      applyMiddleware(logger, thunk, promisesMiddleware)),
+      applyMiddleware(thunk, logger, promisesMiddleware)),
   );
 
   if (module.hot) {

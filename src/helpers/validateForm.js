@@ -1,4 +1,3 @@
-
 const validateForm = (values) => {
   const errors = {};
   // const emailPattern = /(.+)@(.+){2,}\.(.+){2,}/;

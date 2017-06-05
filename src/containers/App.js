@@ -7,7 +7,8 @@ import { connect } from 'react-redux';
 // import { getFormValues } from 'redux-form';
 import theme from 'reapop-theme-wybo';
 import path from 'path';
-import { downloadRepos } from '../actions';
+import { getLink } from '../helpers';
+import { downloadRepos, postLoadRepos } from '../actions';
 import { PER_PAGE_LIST } from '../constants';
 import spongeBob from '../sponge_bob.jpg';
 import { SearchForm, Settings } from '../components';
@@ -39,13 +40,18 @@ function onValidData(values) {
 class App extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.fetchRepo = ::this.fetchRepo;
+    this.fetchRepos = ::this.fetchRepos;
   }
-  // componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps) {
   //  todo postloading others pages for repos
-  // }
+    const oldNextLink = getLink('next', this.props.pages);
+    const newNextLink = getLink('next', nextProps.pages);
+    if (newNextLink && oldNextLink !== newNextLink) {
+      setTimeout(() => this.props.fetchReposRest(newNextLink));
+    }
+  }
 
-  fetchRepo(owner) {
+  fetchRepos(owner) {
     if (owner) {
       const gitPath = path.resolve(
         'search/repositories',
@@ -83,14 +89,14 @@ class App extends React.PureComponent {
             repos={repos}
             reposLoaded={!!reposLoaded}
             onSubmit={onValidData}
-            onOwnerBlur={this.fetchRepo}
+            onOwnerBlur={this.fetchRepos}
           />
         </div>
         <div className={AppCss['App-main']}>
           <Settings
             perPage={perPage}
-            onPerPageChange={addQuery}
             perPageList={this.props.perPageList}
+            onPerPageChange={addQuery}
           />
           {this.props.children}
         </div>
@@ -98,6 +104,10 @@ class App extends React.PureComponent {
     );
   }
 }
+const page = PropTypes.shape({
+  rel: PropTypes.string,
+  url: PropTypes.string,
+});
 
 App.propTypes = {
   repos: PropTypes.arrayOf(PropTypes.shape({
@@ -105,20 +115,29 @@ App.propTypes = {
   })),
   children: PropTypes.node,
   fetchRepos: PropTypes.func.isRequired,
+  fetchReposRest: PropTypes.func.isRequired,
   perPage: PropTypes.number.isRequired,
+  pages: PropTypes.shape({
+    next: page,
+    last: page,
+  }),
   perPageList: PropTypes.arrayOf(PropTypes.number),
 };
 
-const getRepos = ({ body = {} }) => body.items;
+const getRepos = (body = {}) => body.items;
+const getPages = (headers = { Link: {} }) => headers.Link;
+
 const mapStateToProps = (state, ownProps) => ({
   // formValues: getFormValues('leftSearch')(state),
   perPage: Number(ownProps.location && ownProps.location.query.per_page) || PER_PAGE_LIST[1],
   perPageList: PER_PAGE_LIST,
-  repos: getRepos(state.repos),
+  repos: state.repos && getRepos(state.repos.body),
+  pages: state.repos && getPages(state.repos.headers),
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchRepos: bindActionCreators(downloadRepos, dispatch),
+  fetchReposRest: bindActionCreators(postLoadRepos, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

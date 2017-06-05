@@ -1,5 +1,5 @@
 import parse from 'parse-link-header';
-import { PROMISE /* SET_HEADERS*/ } from '../constants';
+import { PROMISE } from '../constants';
 
 const middleware = store => next => (action) => {
   if (action.type !== PROMISE) {
@@ -26,6 +26,7 @@ const middleware = store => next => (action) => {
   .then(body => store.dispatch({
     type: successAction,
     path,
+    query,
     payload: {
       body,
       headers,
@@ -33,6 +34,7 @@ const middleware = store => next => (action) => {
   }), error => store.dispatch({
     type: failureAction,
     path,
+    query,
     error,
   }));
   return next(action);

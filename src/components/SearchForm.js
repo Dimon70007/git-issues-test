@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Combobox } from 'react-widgets';
-import validateForm from '../reducers/validateForm';
+import { validateForm } from '../helpers';
 import RenderField from './RenderField';
 import { WidgetsLess } from '../styles';
 
@@ -59,7 +59,6 @@ const SearchForm = (props) => {
               }}
 
               filter='startsWith'
-              // handleSubmit={handleSubmit}
             />
           </div>
         </div>

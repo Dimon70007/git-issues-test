@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { parseLink } from '../mergeurlQuery';
+import { parseLink } from '../helpers';
 import { PagesCss } from '../styles';
 
 const link = (page = {}, pathname) => {

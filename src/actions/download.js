@@ -1,16 +1,18 @@
 import { getPath } from '../api';
-import { LOAD_ACTIONS, PROMISE } from '../constants';
+import { PROMISE } from '../constants';
 
-const loadPath = (prefix) => {
+const loadPath = (prefix, actions) => {
   let oldPath = '';
   let oldQuery = {};
   return (newPath, newQuery) => {
     if (oldPath !== newPath || oldQuery !== newQuery) {
       oldPath = newPath;
       oldQuery = newQuery;
+      console.log('newPath ', newPath);
+      console.log('newQuery ', newQuery);
       return {
         type: PROMISE,
-        actions: LOAD_ACTIONS.map(item => (`${prefix}${item}`)),
+        actions: actions.map(item => (`${prefix}${item}`)),
         path: newPath,
         query: newQuery,
         promise: getPath(newPath, newQuery),
