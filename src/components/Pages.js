@@ -17,15 +17,26 @@ const link = (page = {}, pathname) => {
   );
 };
 
+// const generateLinks = function *(prev = {}, last = {}) => {
+//   if (last.rel) {
+//
+//   }
+//
+// };
+
 const Pages = ({ pages, pathname }) => {
   if (!pages) {
     return null;
   }
+  const { first, prev, next, last } = pages;
+
+  // const links = generateLinks(prev, last);
   return (<div className={PagesCss.container}>
-    {link(pages.first, pathname)}
-    {link(pages.prev, pathname)}
-    {link(pages.next, pathname)}
-    {link(pages.last, pathname)}
+    {link(first, pathname)}
+    {link(prev, pathname)}
+    {/* {links} */}
+    {link(next, pathname)}
+    {link(last, pathname)}
   </div>);
 };
 

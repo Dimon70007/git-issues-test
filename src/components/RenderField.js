@@ -1,8 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+let shouldLoad = true;
+
 const RenderField = ({
-  input, className, containerClass, onOwnerBlur, meta: { touched, error /* , warning */} }) => (
+  input,
+  className,
+  containerClass,
+  onOwnerBlur,
+  meta: { touched, error /* , warning */},
+  }) => (
     <div>
       <div className={containerClass}>
         <input
@@ -10,9 +17,16 @@ const RenderField = ({
           className={className}
           placeholder={input.name}
           type='text'
-          onBlur={(event, newValue, prevValue) => {
-            input.onBlur(event, newValue, prevValue);
-            if (!error) {
+          onChange={(event) => {
+            input.onChange(event);
+            if (!shouldLoad) {
+              shouldLoad = true;
+            }
+          }}
+          onBlur={(event) => {
+            input.onBlur(event);
+            if (!error && shouldLoad) {
+              shouldLoad = false;
               const value = event.target.value;
               onOwnerBlur(value);
             }

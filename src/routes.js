@@ -14,6 +14,4 @@ const routes = (
   </Route>
 );
 
-console.log('Routes loaded');
-
 export default routes;

@@ -7,11 +7,14 @@ const validateForm = (values) => {
     const value = values[key];
     switch (key) {
       case 'owner':
-      case 'repo':
-      case 'repo1':
         if (!value) {
           errors[key] = `${key} is required`;
         } else if (!inputPattern.test(value)) {
+          errors[key] = `Field ${key} may contains only latin chars, nums, "-", "_" and "."`;
+        }
+        break;
+      case 'repo':
+        if (!inputPattern.test(value)) {
           errors[key] = `Field ${key} may contains only latin chars, nums, "-", "_" and "."`;
         }
         break;

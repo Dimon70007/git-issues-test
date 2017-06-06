@@ -6,11 +6,11 @@ import { validateForm } from '../helpers';
 import RenderField from './RenderField';
 import { WidgetsLess } from '../styles';
 
-function renderCombobox({ input, reposLoaded, meta, ...rest }) {
+function renderCombobox({ input, invalid, reposLoaded, meta, ...rest }) {
   return (<div>
     <Combobox
       {...input}
-      busy={meta.visited && !reposLoaded}
+      busy={!invalid && meta.active && !reposLoaded}
       placeholder={input.name}
       {...rest}
     />
@@ -30,7 +30,6 @@ const SearchForm = (props) => {
     onOwnerBlur,
     repos,
     reposLoaded,
-    // change,
     submit,
     invalid,
   } = props;
@@ -46,18 +45,16 @@ const SearchForm = (props) => {
               component={RenderField}
               onOwnerBlur={onOwnerBlur}
             />
-            {/* <Field name='repo' component={RenderField} type='text' label='repo' /> */}
             <Field
               name='repo'
               component={renderCombobox}
-              data={repos}
-              required
+              data={invalid ? [] : repos}
+              invalid={invalid}
               reposLoaded={reposLoaded}
               onSelect={(/* value*/) => {
                 // props.change('repo', value);
                 setTimeout(() => submit('leftSearch'));
               }}
-
               filter='startsWith'
             />
           </div>

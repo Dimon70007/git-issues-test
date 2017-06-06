@@ -1,8 +1,8 @@
 import url from 'url';
 import validateForm from './validateForm';
 
-const getLink = (rel, pages = {}) => {
-  const page = pages[rel];
+const getLink = (rel, pages) => {
+  const page = pages && pages[rel];
   if (page) {
     return page.url;
   }

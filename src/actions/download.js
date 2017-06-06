@@ -8,8 +8,6 @@ const loadPath = (prefix, actions) => {
     if (oldPath !== newPath || oldQuery !== newQuery) {
       oldPath = newPath;
       oldQuery = newQuery;
-      console.log('newPath ', newPath);
-      console.log('newQuery ', newQuery);
       return {
         type: PROMISE,
         actions: actions.map(item => (`${prefix}${item}`)),

@@ -36,9 +36,6 @@ const downloadReducer = prefix => (state = initState, action) => {
         path,
         query,
       };
-    case postLoading:
-      console.log(postLoading);
-      return state;
     default:
       return state;
   }
