@@ -7,7 +7,7 @@ const IssuesList = (props) => {
   const items = props.children;
   const dataList = items.length && items.map(item =>
       (<li key={item.id}>
-        <IssueItem issue={item} pathname={props.pathname} />
+        <IssueItem issue={item} />
       </li>
   ));
   return (
@@ -28,7 +28,6 @@ IssuesList.propTypes = {
       number: PropTypes.number.isRequired,
     }),
   ),
-  pathname: PropTypes.string.isRequired,
 };
 
 export default IssuesList;

@@ -16,7 +16,7 @@ const link = (page = {}, pathname) => {
     </Link>
   );
 };
-
+// todo any links with number after first page
 // const generateLinks = function *(prev = {}, last = {}) => {
 //   if (last.rel) {
 //
