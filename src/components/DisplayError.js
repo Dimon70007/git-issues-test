@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { mergeurlQuery } from '../helpers';
 
 class DisplayError extends React.Component {
   componentWillUpdate(nextProps) {
@@ -12,14 +11,13 @@ class DisplayError extends React.Component {
       };
       const q = error.query && error.query.q;
       notify({
-        title: `Couldn't load path ${error.path} with query ${q}`,
+        title: `Couldn't load path ${error.path} with query ${q || ''}`,
         status: 'error',
-        background: 'rgb(180, 215, 236)',
         dismissible: false,
         dismissAfter: 10000,
         message: error.message || 'Path not found',
         closeButton: true,
-        position: 'tc',
+        position: 'tl',
         buttons: [
           {
             name: 'Ok',

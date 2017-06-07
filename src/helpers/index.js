@@ -1,4 +1,5 @@
 import url from 'url';
+import querystring from 'querystring';
 import validateForm from './validateForm';
 import mergeBody from './mergeBody';
 
@@ -29,9 +30,12 @@ const mergeurlQuery = (urlPath, params) => {
   return url.format({ ...urlObj, query, search: null });
 };
 
+const createGithubQ = query => querystring(query, '&', '+');
+
 const parseLink = linkUrl => url.parse(linkUrl, true);
 
 export {
+  createGithubQ,
   mergeLocation,
   validateForm,
   parseLink,

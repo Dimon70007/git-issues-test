@@ -31,7 +31,12 @@ const onValidData = (values) => {
     const gitPath = path.resolve(
       'repos', owner, repo, 'issues',
     );
-    pushOptions({ pathname: gitPath });
+    const query = {
+      q: 'is:issue is:open',
+      // sort: 'stars',
+      // per_page: '100',
+    };
+    pushOptions({ pathname: gitPath, query });
   } else {
     console.log('Not handled values in App.js: ', values);
   }
@@ -76,7 +81,6 @@ class App extends React.PureComponent {
       children,
       notify,
       error,
-      pathname,
     } = this.props;
     const repos = reposLoaded ?
       reposLoaded.map(repo => repo.name) : [];
@@ -125,7 +129,6 @@ const page = PropTypes.shape({
 });
 
 App.propTypes = {
-  pathname: PropTypes.string.isRequired,
   repos: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
   })),

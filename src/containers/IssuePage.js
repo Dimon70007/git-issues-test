@@ -16,7 +16,7 @@ class IssuePage extends React.Component {
     const pathname = props.pathname;
     console.log('pathname ', pathname);
     console.log('query ', query);
-    // this.getIssue(pathname, query);
+    this.getIssue(pathname, query);
   }
 
   componentWillUpdate(nextProps) {
@@ -27,13 +27,13 @@ class IssuePage extends React.Component {
     if (prevPath !== nextPath || prevSearch !== nextSearch) {
       console.log('nextPath ', nextPath);
       console.log('nextProps ', nextProps);
-      // this.getIssue(nextPath, nextProps.query);
+      this.getIssue(nextPath, nextProps.query);
     }
   }
 
-  // getIssue(pathname, query) {
-  //   this.props.loadIssue(pathname, query);
-  // }
+  getIssue(pathname, query) {
+    this.props.loadIssue(pathname, query);
+  }
 
   render() {
     const { issue, items, message, error, pages, pathname } = this.props;
@@ -58,7 +58,6 @@ class IssuePage extends React.Component {
         <Pages pages={pages} pathname={pathname} />
       </div>
     );
-  // номера, названия, даты открытия.
   }
 }
 const page = PropTypes.shape({
@@ -94,7 +93,7 @@ IssuePage.propTypes = {
   query: PropTypes.object.isRequired,
   message: PropTypes.string,
   pathname: PropTypes.string.isRequired,
-  // loadIssue: PropTypes.func.isRequired,
+  loadIssue: PropTypes.func.isRequired,
 };
 
 const getPages = (headers = { Link: {} }) => headers.Link;
