@@ -16,7 +16,7 @@ const middleware = store => next => (action) => {
   action.promise
   .then((response) => {
     if (response.status >= 400) {
-      throw new Error('Bad response from server');
+      throw new Error(`Bad response from server: ${response.statusText}`);
     }
     const Link = response.headers.get('link');
     const parsedLink = parse(Link);

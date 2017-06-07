@@ -6,35 +6,22 @@ const initState = {
 };
 
 const downloadReducer = prefix => (state = initState, action) => {
-  const [loading, loaded, loadFailure] =
+  const { payload, type } = action;
+  const [loading, loaded] =
     LOAD_ACTIONS.map(item => (`${prefix}${item}`));
-  const [postLoading, postLoaded, postLoadFailure] =
+  const [, postLoaded] =
     POST_LOAD_ACTIONS.map(item => (`${prefix}${item}`));
-  const { error, path, query, payload } = action;
-  switch (action.type) {
+  switch (type) {
     case loading:
       return {
         message: `${loading}...`,
       };
     case loaded:
       return payload;
-    case loadFailure:
-      return {
-        error,
-        path,
-        query,
-      };
     case postLoaded:
       return {
         body: mergeBody(state.body, payload.body),
         headers: payload.headers,
-      };
-    case postLoadFailure:
-      return {
-        ...state,
-        error,
-        path,
-        query,
       };
     default:
       return state;

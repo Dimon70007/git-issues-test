@@ -1,5 +1,6 @@
 import url from 'url';
 import validateForm from './validateForm';
+import mergeBody from './mergeBody';
 
 const getLink = (rel, pages) => {
   const page = pages && pages[rel];
@@ -9,19 +10,11 @@ const getLink = (rel, pages) => {
   return '';
 };
 
-const mergeBody = (oldBody, newBody) => {
-  if (Array.isArray(oldBody)) {
-    return [...oldBody, ...newBody];
-  }
-  const items = oldBody.items;
-  if (items) {
-    const newItems = newBody.items;
-    return {
-      ...newBody,
-      items: [...items, ...newItems],
-    };
-  }
-  return oldBody;
+const mergeLocation = (location = {}, options = {}) => {
+  const pathname = options.pathname || location.pathname;
+  const query = options.query ? { ...location.query, ...options.query } : location.query;
+  const newLocation = { ...location, pathname, query };
+  return newLocation;
 };
 
 const mergeurlQuery = (urlPath, params) => {
@@ -39,6 +32,7 @@ const mergeurlQuery = (urlPath, params) => {
 const parseLink = linkUrl => url.parse(linkUrl, true);
 
 export {
+  mergeLocation,
   validateForm,
   parseLink,
   getLink,

@@ -1,41 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { browserHistory } from 'react-router';
-import NotificationSystem from 'reapop';
+import NotificationSystem, { addNotification as notification } from 'reapop';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 // import { getFormValues } from 'redux-form';
 import theme from 'reapop-theme-wybo';
 import path from 'path';
-import { getLink } from '../helpers';
-import { downloadRepos, postLoadRepos } from '../actions';
+import { getLink, mergeLocation } from '../helpers';
+import { downloadRepos, postLoadRepos, clearError } from '../actions';
 import { PER_PAGE_LIST } from '../constants';
 import spongeBob from '../sponge_bob.jpg';
 import { SearchForm, Settings } from '../components';
+import DisplayError from '../components/DisplayError';
 import { AppCss, SearchFormLeftCss } from '../styles';
 
-const handleOnSearch = (newPath) => {
-  const location = { ...browserHistory.getCurrentLocation(), pathname: newPath };
-  browserHistory.push(location);
+const pushOptions = (options = {}) => {
+  const locationWithOptions = mergeLocation(browserHistory.getCurrentLocation(), options);
+  console.log('locationWithOptions ', locationWithOptions);
+  browserHistory.push(locationWithOptions);
 };
 
-function addQuery(newQuery) {
-  const location = { ...browserHistory.getCurrentLocation() };
-  location.query = { ...location.query, ...newQuery };
-  browserHistory.push(location);
-}
+const addQuery = (newQuery) => {
+  pushOptions({ query: newQuery });
+};
 
-function onValidData(values) {
+const onValidData = (values) => {
   const { owner, repo } = values;
   if (owner && repo) {
     const gitPath = path.resolve(
       'repos', owner, repo, 'issues',
     );
-    handleOnSearch(gitPath);
+    pushOptions({ pathname: gitPath });
   } else {
     console.log('Not handled values in App.js: ', values);
   }
-}
+};
 
 class App extends React.PureComponent {
   constructor(props) {
@@ -43,7 +43,7 @@ class App extends React.PureComponent {
     this.fetchRepos = ::this.fetchRepos;
   }
   componentWillUpdate(nextProps) {
-  //  todo postloading others pages for repos
+  //  postloading others pages for repos
     const oldNextLink = getLink('next', this.props.pages);
     const newNextLink = getLink('next', nextProps.pages);
     if (newNextLink && oldNextLink !== newNextLink) {
@@ -68,14 +68,28 @@ class App extends React.PureComponent {
   }
 
   render() {
-    const perPage = this.props.perPage;
-    const reposLoaded = this.props.repos;
+    const {
+      clearErr,
+      perPage,
+      repos: reposLoaded,
+      perPageList,
+      children,
+      notify,
+      error,
+      pathname,
+    } = this.props;
     const repos = reposLoaded ?
       reposLoaded.map(repo => repo.name) : [];
     return (
       <div className={AppCss.App}>
         <NotificationSystem
           theme={theme}
+        />
+        <DisplayError
+          clearError={clearErr}
+          notify={notify}
+          pushOptions={pushOptions}
+          error={error}
         />
         <div className={AppCss['App-sidebar']}>
           <img
@@ -95,21 +109,23 @@ class App extends React.PureComponent {
         <div className={AppCss['App-main']}>
           <Settings
             perPage={perPage}
-            perPageList={this.props.perPageList}
+            perPageList={perPageList}
             onPerPageChange={addQuery}
           />
-          {this.props.children}
+          {children}
         </div>
       </div>
     );
   }
 }
+
 const page = PropTypes.shape({
   rel: PropTypes.string,
   url: PropTypes.string,
 });
 
 App.propTypes = {
+  pathname: PropTypes.string.isRequired,
   repos: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
   })),
@@ -122,6 +138,16 @@ App.propTypes = {
     last: page,
   }),
   perPageList: PropTypes.arrayOf(PropTypes.number),
+  error: PropTypes.shape({
+    message: PropTypes.string,
+    path: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]),
+    query: PropTypes.object,
+  }),
+  notify: PropTypes.func.isRequired,
+  clearErr: PropTypes.func.isRequired,
 };
 
 const getRepos = (body = {}) => body.items;
@@ -129,8 +155,10 @@ const getPages = (headers = { Link: {} }) => headers.Link;
 
 const mapStateToProps = (state, ownProps) => ({
   // formValues: getFormValues('leftSearch')(state),
+  pathname: ownProps.location && ownProps.location.pathname,
   perPage: Number(ownProps.location && ownProps.location.query.per_page) || PER_PAGE_LIST[1],
   perPageList: PER_PAGE_LIST,
+  error: state.error,
   repos: state.repos && getRepos(state.repos.body),
   pages: state.repos && getPages(state.repos.headers),
 });
@@ -138,6 +166,8 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   fetchRepos: bindActionCreators(downloadRepos, dispatch),
   fetchReposRest: bindActionCreators(postLoadRepos, dispatch),
+  notify: bindActionCreators(notification, dispatch),
+  clearErr: bindActionCreators(clearError, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
