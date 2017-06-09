@@ -9,7 +9,7 @@ import theme from 'reapop-theme-wybo';
 import path from 'path';
 import { getLink, mergeLocation } from '../helpers';
 import { downloadRepos, postLoadRepos, clearError } from '../actions';
-import { PER_PAGE_LIST } from '../constants';
+import { PER_PAGE_LIST, REPOS_PREFIX } from '../constants';
 import spongeBob from '../sponge_bob.jpg';
 import { SearchForm, Settings } from '../components';
 import DisplayError from '../components/DisplayError';
@@ -32,7 +32,7 @@ const onValidData = (values) => {
       'repos', owner, repo, 'issues',
     );
     const query = {
-      q: 'is:issue is:open',
+      q: 'is:open is:issue',
       // sort: 'stars',
       // per_page: '100',
     };
@@ -162,8 +162,8 @@ const mapStateToProps = (state, ownProps) => ({
   perPage: Number(ownProps.location && ownProps.location.query.per_page) || PER_PAGE_LIST[1],
   perPageList: PER_PAGE_LIST,
   error: state.error,
-  repos: state.repos && getRepos(state.repos.body),
-  pages: state.repos && getPages(state.repos.headers),
+  repos: state[REPOS_PREFIX] && getRepos(state[REPOS_PREFIX].body),
+  pages: state[REPOS_PREFIX] && getPages(state[REPOS_PREFIX].headers),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Loader from 'react-loader';
 import { IssuesList, Pages } from '../components';
+import { ISSUES_PREFIX } from '../constants';
 import { downloadIssues } from '../actions';
 import { IssuesPageCss, LoaderCss } from '../styles';
 
@@ -78,10 +79,10 @@ IssuesPage.propTypes = {
 const getPages = (headers = { Link: {} }) => headers.Link;
 
 const mapStateToProps = (state, ownProps) => ({
-  issues: state.issues.body,
+  issues: state[ISSUES_PREFIX].body,
   error: state.error,
-  message: state.issues.message,
-  pages: getPages(state.issues.headers),
+  message: state[ISSUES_PREFIX].message,
+  pages: getPages(state[ISSUES_PREFIX].headers),
   pathname: ownProps.location.pathname,
   search: ownProps.location.search,
   query: ownProps.location.query,

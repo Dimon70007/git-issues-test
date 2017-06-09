@@ -7,6 +7,7 @@ import IssuePage from './containers/IssuePage';
 const routes = (
   <Route path='/' component={App}>
     <Route
+      // path='/search'
       path='/repos/:owner/:repo/issues'
       component={IssuesPage}
     />

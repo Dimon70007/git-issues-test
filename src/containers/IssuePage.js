@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Loader from 'react-loader';
 import { Pages } from '../components';
-// import List from '../components/List';
-// import Comment from '../components/Comment';
-import { downloadIssue } from '../actions';
+import List from '../components/List';
+import Fetcher from './Fetcher';
+import { COMMENTS_PREFIX, PREFIX_ISSUE } from '../constants';
+import Comment from '../components/Comment';
+import { downloadIssue, downloadComments } from '../actions';
 import { IssuePageCss, LoaderCss, CommentCss, ListCss } from '../styles';
 
 class IssuePage extends React.Component {
@@ -14,8 +16,8 @@ class IssuePage extends React.Component {
     super(props);
     const query = props.query;
     const pathname = props.pathname;
-    console.log('pathname ', pathname);
-    console.log('query ', query);
+    // console.log('pathname ', pathname);
+    // console.log('query ', query);
     this.getIssue(pathname, query);
   }
 
@@ -36,24 +38,38 @@ class IssuePage extends React.Component {
   }
 
   render() {
-    const { issue, items, message, error, pages, pathname } = this.props;
+    const { issue, message, error, pages, pathname, loadComments } = this.props;
     if (error) {
       return null;
     }
+    const commentsUrl = issue.comments_url;
     const loaded = !message;
-    const listIssue = loaded ? items : [];
     console.log('issue ', issue);
+    // const item = {
+    //   title: issue.body,
+    //   number: issue.number,
+    //   created_at: issue.created_at,
+    // };
     return (
       <div className={IssuePageCss.container}>
         <Loader loaded={loaded} className={LoaderCss.container}>
-          {/* <List
+          {/* { loaded ? (<h4>{issue.title}</h4>
+            <Comment
+              item={item}
+              className={CommentCss}
+          />)} */}
+          <Fetcher
+            // child props
             pathname={pathname}
             RenderChild={Comment}
             itemClass={CommentCss}
             containerClass={ListCss}
-            >
-            {listIssue}
-          </List> */}
+            // ownProps
+            ChildComponent={List}
+            prefix={COMMENTS_PREFIX}
+            fetchCallback={loadComments}
+            urlPath={commentsUrl}
+          />
         </Loader>
         <Pages pages={pages} pathname={pathname} />
       </div>
@@ -66,15 +82,21 @@ const page = PropTypes.shape({
 });
 
 IssuePage.propTypes = {
-  issue: PropTypes.object,
-  items: PropTypes.arrayOf(
-        PropTypes.shape({
-          title: PropTypes.string,
-          number: PropTypes.number,
-          created_at: PropTypes.string,
-          id: PropTypes.number,
-        }),
-  ),
+  issue: PropTypes.object.isRequired,
+  search: PropTypes.string.isRequired,
+  query: PropTypes.object.isRequired,
+  pathname: PropTypes.string.isRequired,
+  loadIssue: PropTypes.func.isRequired,
+  loadComments: PropTypes.func.isRequired,
+  message: PropTypes.string,
+  // items: PropTypes.arrayOf(
+  //   PropTypes.shape({
+  //     title: PropTypes.string,
+  //     number: PropTypes.number,
+  //     created_at: PropTypes.string,
+  //     id: PropTypes.number,
+  //   }),
+  // ),
   pages: PropTypes.shape({
     next: page,
     prev: page,
@@ -89,21 +111,16 @@ IssuePage.propTypes = {
     ]),
     query: PropTypes.object,
   }),
-  search: PropTypes.string.isRequired,
-  query: PropTypes.object.isRequired,
-  message: PropTypes.string,
-  pathname: PropTypes.string.isRequired,
-  loadIssue: PropTypes.func.isRequired,
 };
 
 const getPages = (headers = { Link: {} }) => headers.Link;
-const getItems = (body = { items: [] }) => body.items;
+const getCommentsUrl = (body = {}) => (body.commets ? body.comments_url : '');
 
 const mapStateToProps = (state, ownProps) => ({
-  issue: state.issue.body,
-  items: getItems(state.issue.body),
-  message: state.issue.message,
-  pages: getPages(state.issue.headers),
+  issue: state[PREFIX_ISSUE].body || {},
+  commentsUrl: getCommentsUrl(state[PREFIX_ISSUE].body),
+  message: state[PREFIX_ISSUE].message,
+  pages: getPages(state[PREFIX_ISSUE].headers),
   pathname: ownProps.location.pathname,
   search: ownProps.location.search,
   query: ownProps.location.query,
@@ -112,6 +129,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   loadIssue: bindActionCreators(downloadIssue, dispatch),
+  loadComments: bindActionCreators(downloadComments, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IssuePage);
