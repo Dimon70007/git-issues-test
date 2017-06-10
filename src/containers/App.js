@@ -17,7 +17,7 @@ import { AppCss, SearchFormLeftCss } from '../styles';
 
 const pushOptions = (options = {}) => {
   const locationWithOptions = mergeLocation(browserHistory.getCurrentLocation(), options);
-  console.log('locationWithOptions ', locationWithOptions);
+  // console.log('locationWithOptions ', locationWithOptions);
   browserHistory.push(locationWithOptions);
 };
 

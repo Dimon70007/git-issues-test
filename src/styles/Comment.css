@@ -1,3 +1,69 @@
 .container {
+  width: auto;
+  height: auto;
+  position: relative;
+  /*overflow: hidden;*/
+  color: rgb(160, 195, 216);
+  background: #fff;
+  border: 1px solid rgb(180, 215, 236);
+  margin: 10px;
+  margin-left: 60px;
+  box-sizing: border-box;
+  padding-left: 20px;
+  border-radius: 5px 5px 10px 10px;
   text-align: left;
+}
+.container a {
+  text-decoration: none;
+  font-size: 1em;
+  transition: all 0.5s ease-in-out;
+}
+
+.container a:link,
+.container a:visited {
+  color: rgb(160, 195, 216);
+}
+
+.container p {
+  padding: 5px;
+  margin: 0;
+  color: #777;
+}
+
+.container a:hover {
+  color: rgb(110, 145, 166);
+  cursor:pointer;
+  text-shadow: none;
+  transform: scale(1.2);
+}
+
+.avatar {
+  position:absolute;
+  left: -60px;
+  top: 20px;
+}
+
+.container::before {
+  position:absolute;
+  left: -20px;
+  top: 20px;
+  display: block;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  content: " ";
+  border-color: transparent;
+  border-style: solid solid outset;
+  /*border-left: 0 solid transparent;
+  border-right: 20px solid #fff;
+  border-bottom: 10px solid transparent;
+  border-top: 10px solid transparent;*/
+  border-width: 10px;
+  border-right-color: rgb(160, 195, 216);
+}
+
+.container:active {
+  transition-duration: 1S;
+  transition-timing-function: ease-in-out;
+  transition-delay: 1.5S;
 }

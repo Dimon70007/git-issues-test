@@ -3,21 +3,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Loader from 'react-loader';
-import { Pages } from '../components';
-import List from '../components/List';
+import { Pages, List, Comment, CreateHtmlLink, DateToLocale } from '../components';
 import Fetcher from './Fetcher';
 import { COMMENTS_PREFIX, PREFIX_ISSUE } from '../constants';
-import Comment from '../components/Comment';
 import { downloadIssue, downloadComments } from '../actions';
 import { IssuePageCss, LoaderCss, CommentCss, ListCss } from '../styles';
 
 class IssuePage extends React.Component {
-  constructor(props) {
-    super(props);
-    const query = props.query;
-    const pathname = props.pathname;
-    // console.log('pathname ', pathname);
-    // console.log('query ', query);
+  componentWillMount() {
+    const query = this.props.query;
+    const pathname = this.props.pathname;
     this.getIssue(pathname, query);
   }
 
@@ -27,8 +22,6 @@ class IssuePage extends React.Component {
     const prevSearch = this.props.search;
     const prevPath = this.props.pathname;
     if (prevPath !== nextPath || prevSearch !== nextSearch) {
-      console.log('nextPath ', nextPath);
-      console.log('nextProps ', nextProps);
       this.getIssue(nextPath, nextProps.query);
     }
   }
@@ -44,32 +37,52 @@ class IssuePage extends React.Component {
     }
     const commentsUrl = issue.comments_url;
     const loaded = !message;
-    console.log('issue ', issue);
-    // const item = {
-    //   title: issue.body,
-    //   number: issue.number,
-    //   created_at: issue.created_at,
-    // };
+    // console.log('issue ', issue);
+    const item = {
+      body: issue.body,
+      user: issue.user,
+      created_at: issue.created_at,
+    };
+    const body = loaded ? (<div>
+      <h2>
+        <CreateHtmlLink
+          url={issue.html_url}
+          anckhor={`${issue.title} #${issue.number}`}
+          title={`open issue #${issue.number} on github`}
+        />
+      </h2>
+      <div className={IssuePageCss.header}>
+        {'State: '}
+        <h3 className={IssuePageCss[issue.state] || IssuePageCss.default}>
+          {issue.state}!
+        </h3>
+        {' Opened by '}<strong>
+          {issue.user && issue.user.login}
+        </strong>
+        {' '}
+        <DateToLocale source={issue.created_at} lang='en' />
+      </div>
+      <Comment
+        item={item}
+        className={CommentCss}
+      />
+      <Fetcher
+        // child props
+        pathname={pathname}
+        RenderChild={Comment}
+        itemClass={CommentCss}
+        containerClass={ListCss}
+        // ownProps
+        ChildComponent={List}
+        prefix={COMMENTS_PREFIX}
+        fetchCallback={loadComments}
+        urlPath={commentsUrl}
+      />
+    </div>) : null;
     return (
       <div className={IssuePageCss.container}>
         <Loader loaded={loaded} className={LoaderCss.container}>
-          {/* { loaded ? (<h4>{issue.title}</h4>
-            <Comment
-              item={item}
-              className={CommentCss}
-          />)} */}
-          <Fetcher
-            // child props
-            pathname={pathname}
-            RenderChild={Comment}
-            itemClass={CommentCss}
-            containerClass={ListCss}
-            // ownProps
-            ChildComponent={List}
-            prefix={COMMENTS_PREFIX}
-            fetchCallback={loadComments}
-            urlPath={commentsUrl}
-          />
+          {body}
         </Loader>
         <Pages pages={pages} pathname={pathname} />
       </div>
@@ -89,14 +102,6 @@ IssuePage.propTypes = {
   loadIssue: PropTypes.func.isRequired,
   loadComments: PropTypes.func.isRequired,
   message: PropTypes.string,
-  // items: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     title: PropTypes.string,
-  //     number: PropTypes.number,
-  //     created_at: PropTypes.string,
-  //     id: PropTypes.number,
-  //   }),
-  // ),
   pages: PropTypes.shape({
     next: page,
     prev: page,

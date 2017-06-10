@@ -9,7 +9,7 @@ const List = (props) => {
       </li>
   ));
   return (
-    <div className={containerClass}>
+    <div className={containerClass.container}>
       <ul>
         {dataList || null}
       </ul>
@@ -19,10 +19,6 @@ const List = (props) => {
 
 List.propTypes = {
   RenderChild: PropTypes.func.isRequired,
-  // PropTypes.oneOfType([
-  //   PropTypes.node.isRequired,
-  //   PropTypes.element.isRequired,
-  // ]),
   itemClass: PropTypes.object.isRequired,
   containerClass: PropTypes.object.isRequired,
   items: PropTypes.arrayOf(

@@ -3,6 +3,21 @@ import querystring from 'querystring';
 import validateForm from './validateForm';
 import mergeBody from './mergeBody';
 
+const getAnckhor = (source) => {
+  const str = String(source).toLowerCase().trim();
+  switch (str) {
+    case 'first':
+      return '<<';
+    case 'prev':
+      return '<';
+    case 'next':
+      return '>';
+    case 'last':
+      return '>>';
+    default:
+      return String(source);
+  }
+};
 const getLink = (rel, pages) => {
   const page = pages && pages[rel];
   if (page) {
@@ -35,6 +50,7 @@ const createGithubQ = query => querystring(query, '&', '+');
 const parseLink = linkUrl => url.parse(linkUrl, true);
 
 export {
+  getAnckhor,
   createGithubQ,
   mergeLocation,
   validateForm,

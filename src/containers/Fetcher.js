@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loader';
+import { Pages } from '../components';
 import { getLink } from '../helpers';
 import { LoaderCss } from '../styles';
 
@@ -47,12 +48,13 @@ class Fetcher extends React.Component {
   }
 
   render() {
-    const { ChildComponent, loaded } = this.props;
+    const { ChildComponent, loaded, links, pathname } = this.props;
     return (
       <Loader loaded={loaded} className={LoaderCss.container}>
         <ChildComponent
           {...this.props} // inject items and all props to child
         />
+        <Pages pages={links} pathname={pathname} />
       </Loader>
     );
   }
@@ -69,6 +71,7 @@ Fetcher.propTypes = {
   urlPath: PropTypes.string.isRequired,
   ChildComponent: PropTypes.func.isRequired,
   fetchCallback: PropTypes.func.isRequired,
+  pathname: PropTypes.string.isRequired,
   fetchRestCallback: PropTypes.func, // [optional]
   urlQuery: PropTypes.object, // [optional]
   links: PropTypes.shape({  // does not need to pass
@@ -93,11 +96,13 @@ const getLinks = ({ headers = { Link: {} } }) => headers.Link;
 const mapStateToProps = (state, ownProps) => {
   const prefix = ownProps.prefix;
   const ownState = state[prefix];
+  const location = ownProps.location;
   return {
     loaded: ownState && !ownState.message,
     items: ownState && getData(ownState),
     links: ownState && getLinks(ownState),
     shouldloadRest: !!ownProps.fetchRestCallback,
+    pathname: location ? location.pathname : '',
   };
 };
 
