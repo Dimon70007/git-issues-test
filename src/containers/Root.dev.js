@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import routes from '../routes';
+import DevTools from './DevTools';
 
 const Root = ({ history, store }) => (
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <div>
+      <Router history={history} routes={routes} />
+      <DevTools />
+    </div>
   </Provider>
 );
 
