@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Loader from 'react-loader';
 import { Pages, List, Comment, CreateHtmlLink, DateToLocale } from '../components';
-import Fetcher from './Fetcher';
+import Fetcher from '../components/Fetcher';
 import { COMMENTS_PREFIX, PREFIX_ISSUE } from '../constants';
 import { downloadIssue, downloadComments } from '../actions';
 import { IssuePageCss, LoaderCss, CommentCss, ListCss } from '../styles';
@@ -68,23 +68,23 @@ class IssuePage extends React.Component {
       />
       <Fetcher
         // child props
-        pathname={pathname}
         RenderChild={Comment}
         itemClass={CommentCss}
         containerClass={ListCss}
         // ownProps
+        pathname={pathname}
         ChildComponent={List}
         prefix={COMMENTS_PREFIX}
         fetchCallback={loadComments}
         urlPath={commentsUrl}
       />
+      <Pages pages={pages} pathname={pathname} />
     </div>) : null;
     return (
       <div className={IssuePageCss.container}>
         <Loader loaded={loaded} className={LoaderCss.container}>
           {body}
         </Loader>
-        <Pages pages={pages} pathname={pathname} />
       </div>
     );
   }
@@ -120,7 +120,6 @@ IssuePage.propTypes = {
 
 const getPages = (headers = { Link: {} }) => headers.Link;
 const getCommentsUrl = (body = {}) => (body.commets ? body.comments_url : '');
-
 const mapStateToProps = (state, ownProps) => ({
   issue: state[PREFIX_ISSUE].body || {},
   commentsUrl: getCommentsUrl(state[PREFIX_ISSUE].body),

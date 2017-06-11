@@ -9,10 +9,9 @@ import { downloadIssues } from '../actions';
 import { IssuesPageCss, LoaderCss } from '../styles';
 
 class IssuesPage extends React.Component {
-  constructor(props) {
-    super(props);
-    const query = props.query;
-    const pathname = props.pathname;
+  componentWillMount() {
+    const query = this.props.query;
+    const pathname = this.props.pathname;
     this.getIssues(pathname, query);
   }
 
@@ -29,6 +28,7 @@ class IssuesPage extends React.Component {
   getIssues(pathname, query) {
     this.props.loadIssues(pathname, query);
   }
+
   render() {
     const { issues, message, error, pages, pathname } = this.props;
     if (error.message) {

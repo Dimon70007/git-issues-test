@@ -48,7 +48,11 @@ class Fetcher extends React.Component {
   }
 
   render() {
-    const { ChildComponent, loaded, links, pathname } = this.props;
+    const {
+      ChildComponent,
+      loaded,
+      links,
+      pathname } = this.props;
     return (
       <Loader loaded={loaded} className={LoaderCss.container}>
         <ChildComponent
@@ -96,13 +100,12 @@ const getLinks = ({ headers = { Link: {} } }) => headers.Link;
 const mapStateToProps = (state, ownProps) => {
   const prefix = ownProps.prefix;
   const ownState = state[prefix];
-  const location = ownProps.location;
   return {
     loaded: ownState && !ownState.message,
     items: ownState && getData(ownState),
     links: ownState && getLinks(ownState),
     shouldloadRest: !!ownProps.fetchRestCallback,
-    pathname: location ? location.pathname : '',
+    pathname: ownProps.pathname,
   };
 };
 

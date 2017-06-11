@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { parseLink, getAnckhor } from '../helpers';
 import { PagesCss } from '../styles';
 
-const createLink = ({ pathname = '', query = {} }, page) => {
+const createLink = ({ pathname, query = {} }, page) => {
   const pathnameWithQuery = { pathname, query };
   const anckhor = getAnckhor(page.rel);
   return (
@@ -30,20 +30,27 @@ const Pages = ({ pages = {}, pathname = '' }) => {
     if (!next.page && !prev.page && !last.page) {
       return null;
     }
-    const { query } = parseLink(last.url || prev.url);
     const step = 1;
+    const maxLinksCount = 6;
+    const { query } = parseLink(last.url || prev.url);
     // min <...>...prevP currentP nextP...<...> max
-    const prevP = prev.page ? Number(prev.page) : Number(first.page);
-    const nextP = next.page ? Number(next.page) : Number(last.page);
+    const min = first.page ? Number(first.page) : Number(next.page) - 1;
+    const prevP = prev.page ? Number(prev.page) : min;
     const max = last.page ? Number(last.page) : Number(prev.page) + 1;
-    const min = 1;
-    if ((left.length + right.length) >= 6) {
+    const nextP = next.page ? Number(next.page) : max;
+    const prevPrev = prevP - step;
+    const nextNext = nextP + step;
+    const hasMaxLinksCount = (left.length + right.length) >= maxLinksCount;
+    const notEnaughPages = prevPrev <= min && nextNext >= max;
+    // console.log('notEnaughPages ', notEnaughPages);
+    // console.log('prevPrev ', prevPrev, 'nextNext ', nextNext);
+    // console.log('max ', max);
+    if (hasMaxLinksCount || notEnaughPages) {
       const delimeter = (left.length && right.length) ? '...' : '';
-      return [...left, delimeter, ...right];
+      return { left, delimeter, right };
     }
     const prevPage = {};
     const nextPage = {};
-    const prevPrev = prevP - step;
     if (prevPrev > min) {
       left.unshift(createLink({
         pathname,
@@ -52,12 +59,11 @@ const Pages = ({ pages = {}, pathname = '' }) => {
       prevPage.page = prevPrev;
       prevPage.rel = prevPrev;
     } else {
-      prevPage.page = prev.page;
+      prevPage.page = min;
       prevPage.rel = prev.rel;
     }
     prevPage.url = prev.url;
 
-    const nextNext = nextP + step;
     if (nextNext < max) {
       right.push(createLink({
         pathname,
@@ -66,26 +72,26 @@ const Pages = ({ pages = {}, pathname = '' }) => {
       nextPage.page = nextNext;
       nextPage.rel = nextNext;
     } else {
-      nextPage.page = next.page;
+      nextPage.page = max;
       nextPage.rel = next.rel;
     }
     nextPage.url = next.url;
-    // const nextNum = Number(nextP.page) + 1
-    // const nextPage = { page: , }
     return generateLinks({ first, next: nextPage, prev: prevPage, last }, [...left], [...right]);
   };
 
   if (!pages) {
     return null;
   }
+  const { left, delimeter, right } = generateLinks(pages) || {};
   const { first, prev, next, last } = pages;
 
-  const links = generateLinks(pages);
   return (<div className={PagesCss.container}>
     {link(first, pathname)}
+    {left}
     {link(prev, pathname)}
-    {links}
+    {delimeter}
     {link(next, pathname)}
+    {right}
     {link(last, pathname)}
   </div>);
 };
