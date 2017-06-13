@@ -85,7 +85,7 @@ module.exports = ({ publicPath }) => ({
         //   sizes: '180x180',
         // },
         {
-          href: '/favicon.ico',
+          href: './favicon.ico',
           rel: 'icon',
           sizes: '32x32',
           type: 'image/ico',
@@ -99,7 +99,7 @@ module.exports = ({ publicPath }) => ({
         //   type: 'module',
         // },
         {
-          src: '/spaForGithub.js',
+          src: './spaForGithub.js',
           type: 'text/javascript',
         },
       ],
