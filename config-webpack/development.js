@@ -42,6 +42,24 @@ module.exports = Merge(CommonConfig({ publicPath }), {
   module: {
     rules: [
       {
+        test: /\.js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+            ['env', { modules: false }],
+              'stage-0',
+              'react',
+            ],
+            plugins: [
+              'transform-runtime',
+              'react-hot-loader/babel',
+            ],
+          },
+        },
+      },
+      {
         test: /\.css$/,
         use: cssConfig,
       },
