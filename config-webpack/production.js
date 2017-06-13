@@ -39,7 +39,6 @@ const publicPath = 'https://dimon70007.github.io/git-issues-test/dist/'; // join
 module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-source-map',
   entry: [
-    'webpack-hot-middleware/client',
     'babel-polyfill',
     './src/index',
   ],
