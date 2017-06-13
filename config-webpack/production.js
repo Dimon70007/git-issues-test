@@ -34,8 +34,9 @@ const lessConfig = extractCss.extract({
   fallback: 'style-loader',
   use: lessUseProd,
 });
+const publicPath = 'https://dimon70007.github.io/git-issues-test/dist/'; // join(__dirname, '../dist');
 
-module.exports = Merge(CommonConfig, {
+module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-source-map',
   entry: [
     'webpack-hot-middleware/client',

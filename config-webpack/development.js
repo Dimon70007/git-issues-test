@@ -25,8 +25,9 @@ const lessDev = [
 ];
 const cssConfig = lessDev.slice(0, -1);
 const lessConfig = lessDev;
+const publicPath = '/static/'; // join(__dirname, '../dist');
 
-module.exports = Merge(CommonConfig, {
+module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-eval-source-map',
   // devServer: {
   //   hot: true,

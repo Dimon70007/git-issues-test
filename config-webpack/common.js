@@ -1,12 +1,11 @@
 const webpack = require('webpack');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const HtmlWebpackTemplate = require('html-webpack-template');
 const { join } = require('path');
 
-const publicPath = join(__dirname, '../static');
 const path = join(__dirname, '../dist');
 
-module.exports = ({
+module.exports = ({ publicPath }) => ({
   output: {
     // library: 'gitIssuesTest',
     path,
@@ -61,9 +60,9 @@ module.exports = ({
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    // new HtmlWebpackPlugin({
-    //   filename: '../index.html',
-    //   template: 'old_index.html',
+    new HtmlWebpackPlugin({
+      filename: '../index.html',
+      template: 'old_index.html',
       // Required
       // inject: false,
       // template: HtmlWebpackTemplate,
@@ -115,6 +114,6 @@ module.exports = ({
 
       // And any other config options from html-webpack-plugin:
       // https://github.com/ampedandwired/html-webpack-plugin#configuration
-    // }),
+    }),
   ],
 });
