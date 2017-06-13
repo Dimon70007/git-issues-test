@@ -10,7 +10,7 @@
   // When the single page app is loaded further down in this file,
   // the correct url will be waiting in the browser's history for
   // the single page app to route accordingly.
-export default (function (l) {
+(function (l) {
   if (l.search) {
     const q = {};
     l.search.slice(1).split('&').forEach((v) => {

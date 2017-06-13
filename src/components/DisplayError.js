@@ -7,7 +7,7 @@ class DisplayError extends React.Component {
     const shouldDisplay = error.message;
     const handleError = () => {
       const notLoaded = () => {
-        pushOptions({ pathname: '/' });
+        pushOptions({ pathname: '/git-issues-test/' });
       };
       const q = error.query && error.query.q;
       notify({

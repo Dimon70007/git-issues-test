@@ -10,7 +10,7 @@ import path from 'path';
 import spongeBob from '../sponge_bob.jpg';
 import { getLink, mergeLocation } from '../helpers';
 import { downloadRepos, postLoadRepos, clearError } from '../actions';
-import { PER_PAGE_LIST, REPOS_PREFIX } from '../constants';
+import { PER_PAGE_LIST, REPOS_PREFIX, PATHNAME_PREFIX } from '../constants';
 import { SearchForm, Settings } from '../components';
 import DisplayError from '../components/DisplayError';
 import { AppCss, SearchFormLeftCss } from '../styles';
@@ -29,7 +29,7 @@ const onValidData = (values) => {
   const { owner, repo } = values;
   if (owner && repo) {
     const gitPath = path.resolve(
-      'repos', owner, repo, 'issues',
+      PATHNAME_PREFIX, 'repos', owner, repo, 'issues',
     );
     const query = {
       q: 'is:open is:issue',
@@ -47,6 +47,7 @@ class App extends React.PureComponent {
     super(props);
     this.fetchRepos = ::this.fetchRepos;
   }
+
   componentWillUpdate(nextProps) {
   //  postloading others pages for repos
     const oldNextLink = getLink('next', this.props.pages);

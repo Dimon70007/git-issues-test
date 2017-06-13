@@ -25,7 +25,7 @@ const lessDev = [
 ];
 const cssConfig = lessDev.slice(0, -1);
 const lessConfig = lessDev;
-const publicPath = '/static/'; // join(__dirname, '../dist');
+const publicPath = '/'; // join(__dirname, '../dist');
 
 module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-eval-source-map',
@@ -71,5 +71,11 @@ module.exports = Merge(CommonConfig({ publicPath }), {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+        PUBLIC_URL: publicPath,
+      },
+    }),
   ],
 });

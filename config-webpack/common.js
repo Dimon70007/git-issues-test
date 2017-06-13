@@ -1,10 +1,9 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackTemplate = require('html-webpack-template');
 const { join } = require('path');
+// const HtmlWebpackTemplate = require('../html-webpack-template');
 
 const path = join(__dirname, '../dist');
-
 module.exports = ({ publicPath }) => ({
   output: {
     // library: 'gitIssuesTest',
@@ -57,15 +56,15 @@ module.exports = ({ publicPath }) => ({
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       filename: '../index.html',
-      // template: 'old_index.html',
+      template: 'old_index.html',
       // Required
-      inject: 'false',
-      template: HtmlWebpackTemplate,
+      inject: 'body',
+      // template: HtmlWebpackTemplate,
       // template: 'node_modules/html-webpack-template/index.ejs',
       //
       // Optional
-      appMountId: 'root',
-      baseHref: 'https://dimon70007.github.io/git-issues-test/',
+      // appMountId: 'root',
+      // baseHref: publicPath,
       // googleAnalytics: {
       //   trackingId: 'UA-XXXX-XX',
       //   pageViewOnLoad: true,
@@ -77,32 +76,32 @@ module.exports = ({ publicPath }) => ({
       //   },
       // ],
       // // mobile: true,
-      links: [
-        'https://fonts.googleapis.com/css?family=Roboto',
+      // links: [
+        // 'https://fonts.googleapis.com/css?family=Roboto',
         // {
         //   href: '/apple-touch-icon.png',
         //   rel: 'apple-touch-icon',
         //   sizes: '180x180',
         // },
-        {
-          href: './favicon.ico',
-          rel: 'icon',
-          sizes: '32x32',
-          type: 'image/ico',
-        },
-      ],
+      //   {
+      //     href: './favicon.ico',
+      //     rel: 'icon',
+      //     sizes: '32x32',
+      //     type: 'image/ico',
+      //   },
+      // ],
       // inlineManifestWebpackName: 'webpackManifest',
-      scripts: [
+      // scripts: [
         // 'http://example.com/somescript.js',
         // {
         //   src: '/myModule.js',
         //   type: 'module',
         // },
-        {
-          src: './spaForGithub.js',
-          type: 'text/javascript',
-        },
-      ],
+      //   {
+      //     type: 'text/javascript',
+      //     src: './spaForGithub.js',
+      //   },
+      // ],
       // title: 'My App',
       // window: {
       //   env: {

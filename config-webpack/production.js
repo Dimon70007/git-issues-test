@@ -15,14 +15,14 @@ const lessUseProd = [
       modules: true,
       localIdentName: '[name]__[local]__[hash:base64:5]',
       constLoaders: 1,
-      sourceMap: false,
+      sourceMap: true,
       '-minimize': true,
     },
   },
   {
     loader: 'less-loader',
     query: {
-      sourceMap: false,
+      sourceMap: true,
     },
   },
 ];
@@ -34,7 +34,7 @@ const lessConfig = extractCss.extract({
   fallback: 'style-loader',
   use: lessUseProd,
 });
-const publicPath = 'https://dimon70007.github.io/git-issues-test/dist/'; // join(__dirname, '../dist');
+const publicPath = 'https://dimon70007.github.io/git-issues-test/dist'; // join(__dirname, '../dist');
 
 module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-source-map',
@@ -58,6 +58,7 @@ module.exports = Merge(CommonConfig({ publicPath }), {
             plugins: [
               'transform-runtime',
             ],
+            // comments: false,
           },
         },
       },
@@ -80,6 +81,7 @@ module.exports = Merge(CommonConfig({ publicPath }), {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
+        PUBLIC_URL: JSON.stringify(publicPath),
       },
     }),
     new webpack.optimize.UglifyJsPlugin({
