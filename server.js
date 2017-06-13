@@ -1,11 +1,11 @@
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
-const config = require('./webpack.config');
+const config = require('./webpack.config')('development');
 const app = new (require('express'))();
 // var Express = require('express');
 // var app = new Express();
-
+console.log('config ', config);
 const compiler = webpack(config);
 const port = 3000;
 

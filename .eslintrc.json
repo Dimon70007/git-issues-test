@@ -17,6 +17,7 @@
       "error",
       {"devDependencies": ["**/*.js", "**/*.spec.js"]}],
     "import/prefer-default-export": 1,
+    "import/no-dynamic-require": 1,
     "no-debugger": 0,
     "no-console": 0,
     "no-undef": 2,
