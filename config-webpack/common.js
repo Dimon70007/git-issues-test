@@ -27,26 +27,26 @@ module.exports = ({ publicPath }) => ({
       {
         test: /\.(jpe?g|png|svg)$/i,
         use: [
-          'url-loader?limit=10000',
+          'url-loader?name=/img/[name].[ext]&limit=10000',
           'img-loader',
         ],
       },
       {
         test: /\.gif$/,
         use: [
-          'url-loader?limit=10000&mimetype=image/png',
+          'url-loader?name=/img/[name].[ext]&limit=10000&mimetype=image/png',
         ],
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
-          'url-loader?limit=10000&mimetype=application/font-woff',
+          'url-loader?name=/fonts/[name].[ext]&limit=10000&mimetype=application/font-woff',
         ],
       },
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
-          'file-loader?name=[name].[ext]',
+          'file-loader?name=/img/[name].[ext]',
         ],
       },
     ],
