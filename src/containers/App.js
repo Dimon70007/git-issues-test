@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 import NotificationSystem, { addNotification as notification } from 'reapop';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -16,9 +16,9 @@ import DisplayError from '../components/DisplayError';
 import { AppCss, SearchFormLeftCss } from '../styles';
 
 const pushOptions = (options = {}) => {
-  const locationWithOptions = mergeLocation(browserHistory.getCurrentLocation(), options);
+  const locationWithOptions = mergeLocation(hashHistory.getCurrentLocation(), options);
   // console.log('locationWithOptions ', locationWithOptions);
-  browserHistory.push(locationWithOptions);
+  hashHistory.push(locationWithOptions);
 };
 
 const addQuery = (newQuery) => {
