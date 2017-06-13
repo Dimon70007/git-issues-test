@@ -59,14 +59,13 @@ module.exports = ({ publicPath }) => ({
       filename: '../index.html',
       // template: 'old_index.html',
       // Required
-      inject: 'head',
+      inject: 'false',
       template: HtmlWebpackTemplate,
       // template: 'node_modules/html-webpack-template/index.ejs',
       //
       // Optional
       appMountId: 'root',
       baseHref: 'https://dimon70007.github.io/git-issues-test/',
-      devServer: 'http://localhost:3000',
       // googleAnalytics: {
       //   trackingId: 'UA-XXXX-XX',
       //   pageViewOnLoad: true,
