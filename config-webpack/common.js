@@ -27,13 +27,13 @@ module.exports = ({ publicPath }) => ({
       {
         test: /\.(gif|ico|svg)$/i,
         use: [
-          'url-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
+          'file-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
         ],
       },
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         use: [
-          'url-loader?name=[name].[ext]&limit=10000&mimetype=application/font-woff&outputPath=fonts/',
+          'file-loader?name=[name].[ext]&limit=10000&mimetype=application/font-woff&outputPath=fonts/',
         ],
       },
       {

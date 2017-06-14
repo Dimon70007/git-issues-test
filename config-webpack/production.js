@@ -34,7 +34,7 @@ const lessConfig = extractCss.extract({
   fallback: 'style-loader',
   use: lessUseProd,
 });
-const publicPath = 'https://dimon70007.github.io/git-issues-test/'; // join(__dirname, '../dist');
+const publicPath = 'https://dimon70007.github.io/git-issues-test/';
 
 module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-source-map',
@@ -65,7 +65,7 @@ module.exports = Merge(CommonConfig({ publicPath }), {
       {
         test: /\.(jpe?g|png)$/i,
         use: [
-          'url-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
+          'file-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
           {
             loader: 'image-webpack-loader',
             options: {

@@ -62,7 +62,7 @@ module.exports = Merge(CommonConfig({ publicPath }), {
       {
         test: /\.(jpe?g|png)$/i,
         use: [
-          'url-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
+          'file-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
           {
             loader: 'image-webpack-loader',
             options: {
