@@ -21,7 +21,7 @@ const PER_PAGE_LIST = [10, 30, 45, 60, 75, 100];
 const CLEAR_ERROR = 'CLEAR_ERROR';
 const PATHNAME_PREFIX = '/'; // process.env.PUBLIC_URL; // '/git-issues-test/';
 
-console.log('PATHNAME_PREFIX ', PATHNAME_PREFIX);
+// console.log('PATHNAME_PREFIX ', PATHNAME_PREFIX);
 
 export {
   PATHNAME_PREFIX,
