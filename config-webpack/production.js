@@ -11,7 +11,7 @@ const extractCss = new ExtractTextPlugin({
 const lessUseProd = [
   {
     loader: 'css-loader',
-    query: {
+    options: {
       modules: true,
       localIdentName: '[name]__[local]__[hash:base64:5]',
       constLoaders: 1,
@@ -21,7 +21,7 @@ const lessUseProd = [
   },
   {
     loader: 'less-loader',
-    query: {
+    options: {
       sourceMap: true,
     },
   },
@@ -34,13 +34,13 @@ const lessConfig = extractCss.extract({
   fallback: 'style-loader',
   use: lessUseProd,
 });
-const publicPath = 'https://dimon70007.github.io/git-issues-test/dist/'; // join(__dirname, '../dist');
+const publicPath = 'https://dimon70007.github.io/git-issues-test/'; // join(__dirname, '../dist');
 
 module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-source-map',
   entry: [
     'babel-polyfill',
-    './src/index',
+    './src/index.js',
   ],
   module: {
     rules: [
@@ -61,6 +61,25 @@ module.exports = Merge(CommonConfig({ publicPath }), {
             // comments: false,
           },
         },
+      },
+      {
+        test: /\.(jpe?g|png)$/i,
+        use: [
+          'url-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              progressive: true,
+              optimizationLevel: 7,
+              interlaced: false,
+              pngquant: {
+                quality: '65-90',
+                speed: 4,
+              },
+            },
+          },
+          // 'img-loader',
+        ],
       },
       {
         test: /\.css$/,

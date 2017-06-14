@@ -25,7 +25,7 @@ const lessDev = [
 ];
 const cssConfig = lessDev.slice(0, -1);
 const lessConfig = lessDev;
-const publicPath = '/'; // join(__dirname, '../dist');
+const publicPath = '/static/'; // join(__dirname, '../dist');
 
 module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-eval-source-map',
@@ -37,7 +37,7 @@ module.exports = Merge(CommonConfig({ publicPath }), {
   entry: [
     'webpack-hot-middleware/client',
     'babel-polyfill',
-    './src/index',
+    './src/index.js',
   ],
   module: {
     rules: [
@@ -58,6 +58,24 @@ module.exports = Merge(CommonConfig({ publicPath }), {
             ],
           },
         },
+      },
+      {
+        test: /\.(jpe?g|png)$/i,
+        use: [
+          'url-loader?name=[name].[ext]&limit=10000&outputPath=imgs/',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              progressive: true,
+              optimizationLevel: 7,
+              interlaced: false,
+              pngquant: {
+                quality: '65-90',
+                speed: 9,
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,

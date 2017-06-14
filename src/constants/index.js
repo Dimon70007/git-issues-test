@@ -19,7 +19,7 @@ const SET_HEADERS = 'SET_HEADERS';
 const CHANGE_PARAMS = 'CHANGE_PARAMS';
 const PER_PAGE_LIST = [10, 30, 45, 60, 75, 100];
 const CLEAR_ERROR = 'CLEAR_ERROR';
-const PATHNAME_PREFIX = ''; // process.env.PUBLIC_URL; // '/git-issues-test/';
+const PATHNAME_PREFIX = '/'; // process.env.PUBLIC_URL; // '/git-issues-test/';
 
 console.log('PATHNAME_PREFIX ', PATHNAME_PREFIX);
 

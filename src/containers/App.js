@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 // import { getFormValues } from 'redux-form';
 import theme from 'reapop-theme-wybo';
 import path from 'path';
-import spongeBob from '../sponge_bob.jpg';
+import spongeBob from '../imgs/sponge_bob.jpg';
 import { getLink, mergeLocation } from '../helpers';
 import { downloadRepos, postLoadRepos, clearError } from '../actions';
 import { PER_PAGE_LIST, REPOS_PREFIX, PATHNAME_PREFIX } from '../constants';
