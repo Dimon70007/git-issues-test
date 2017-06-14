@@ -48,7 +48,7 @@ module.exports = ({ publicPath }) => ({
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
-      filename: './index.html',
+      filename: '../index.html',
       // Required
       title: 'Watching github issues',
       inject: 'body',
