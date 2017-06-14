@@ -34,7 +34,7 @@ const lessConfig = extractCss.extract({
   fallback: 'style-loader',
   use: lessUseProd,
 });
-const publicPath = '/static/'; // 'https://dimon70007.github.io/git-issues-test/';
+const publicPath = '/git-issues-test/dist/';
 
 module.exports = Merge(CommonConfig({ publicPath }), {
   devtool: 'cheap-module-source-map',

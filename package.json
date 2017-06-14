@@ -3,10 +3,7 @@
   "version": "0.0.1",
   "description": "webpack redux react app for watch github's issues",
   "main": "./src/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Dimon70007/git-issues-test.git"
-  },
+  "repository": "https://github.com/Dimon70007/git-issues-test.git",
   "author": "Dimon70007",
   "license": "ISC",
   "scripts": {
