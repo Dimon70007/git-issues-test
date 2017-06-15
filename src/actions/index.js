@@ -8,9 +8,11 @@ const downloadRepos = download(REPOS_PREFIX, LOAD_ACTIONS);
 const downloadAny = prefix => download(prefix, LOAD_ACTIONS);
 const downloadComments = download(COMMENTS_PREFIX, LOAD_ACTIONS);
 const postLoadRepos = download(REPOS_PREFIX, POST_LOAD_ACTIONS);
+const postLoadComments = download(COMMENTS_PREFIX, POST_LOAD_ACTIONS);
 const postLoadAny = prefix => download(prefix, POST_LOAD_ACTIONS);
 
 export {
+  postLoadComments,
   downloadComments,
   postLoadAny,
   downloadAny,

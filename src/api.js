@@ -8,7 +8,7 @@ const getPath = (newPath = '', query = {}) => {
   // Object.entries(query).forEach(([key, value]) => resolved.searchParams.append(key, value));
   // console.log('resolved ', resolved);
   const urlWithParams = mergeurlQuery(resolved, query);
-  console.log('urlWithParams ', urlWithParams);
+  // console.log('urlWithParams ', urlWithParams);
   return fetch(urlWithParams);
 };
 

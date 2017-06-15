@@ -15,11 +15,8 @@ import { SearchForm, Settings } from '../components';
 import DisplayError from '../components/DisplayError';
 import { AppCss, SearchFormLeftCss } from '../styles';
 
-console.log('spongeBob ', spongeBob);
-
 const pushOptions = (options = {}) => {
   const locationWithOptions = mergeLocation(hashHistory.getCurrentLocation(), options);
-  // console.log('locationWithOptions ', locationWithOptions);
   hashHistory.push(locationWithOptions);
 };
 

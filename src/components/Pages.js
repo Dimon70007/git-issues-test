@@ -42,9 +42,6 @@ const Pages = ({ pages = {}, pathname = '' }) => {
     const nextNext = nextP + step;
     const hasMaxLinksCount = (left.length + right.length) >= maxLinksCount;
     const notEnaughPages = prevPrev <= min && nextNext >= max;
-    // console.log('notEnaughPages ', notEnaughPages);
-    // console.log('prevPrev ', prevPrev, 'nextNext ', nextNext);
-    // console.log('max ', max);
     if (hasMaxLinksCount || notEnaughPages) {
       const delimeter = (left.length && right.length) ? '...' : '';
       return { left, delimeter, right };

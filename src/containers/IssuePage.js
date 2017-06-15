@@ -6,7 +6,7 @@ import Loader from 'react-loader';
 import { Pages, List, Comment, CreateHtmlLink, DateToLocale } from '../components';
 import Fetcher from '../components/Fetcher';
 import { COMMENTS_PREFIX, PREFIX_ISSUE } from '../constants';
-import { downloadIssue, downloadComments } from '../actions';
+import { downloadIssue, downloadComments, postLoadComments as loadCommentsRest } from '../actions';
 import { IssuePageCss, LoaderCss, CommentCss, ListCss } from '../styles';
 
 class IssuePage extends React.Component {
@@ -31,7 +31,7 @@ class IssuePage extends React.Component {
   }
 
   render() {
-    const { issue, message, error, pages, pathname, loadComments } = this.props;
+    const { issue, message, error, pages, pathname, loadComments, postLoadComments } = this.props;
     if (error) {
       return null;
     }
@@ -76,6 +76,7 @@ class IssuePage extends React.Component {
         ChildComponent={List}
         prefix={COMMENTS_PREFIX}
         fetchCallback={loadComments}
+        fetchRestCallback={postLoadComments}
         urlPath={commentsUrl}
       />
       <Pages pages={pages} pathname={pathname} />
@@ -101,6 +102,7 @@ IssuePage.propTypes = {
   pathname: PropTypes.string.isRequired,
   loadIssue: PropTypes.func.isRequired,
   loadComments: PropTypes.func.isRequired,
+  postLoadComments: PropTypes.func.isRequired,
   message: PropTypes.string,
   pages: PropTypes.shape({
     next: page,
@@ -134,6 +136,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   loadIssue: bindActionCreators(downloadIssue, dispatch),
   loadComments: bindActionCreators(downloadComments, dispatch),
+  postLoadComments: bindActionCreators(loadCommentsRest, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IssuePage);

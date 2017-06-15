@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Loader from 'react-loader';
-import { Pages } from '../components';
 import { getLink } from '../helpers';
 import { LoaderCss } from '../styles';
 
@@ -58,7 +57,6 @@ class Fetcher extends React.Component {
         <ChildComponent
           {...this.props} // inject items and all props to child
         />
-        <Pages pages={links} pathname={pathname} />
       </Loader>
     );
   }
