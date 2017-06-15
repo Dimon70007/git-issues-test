@@ -1,5 +1,6 @@
 import url from 'url';
 import querystring from 'querystring';
+import { hashHistory } from 'react-router';
 import validateForm from './validateForm';
 import mergeBody from './mergeBody';
 
@@ -15,7 +16,7 @@ const getAnckhor = (source) => {
     case 'last':
       return '>>';
     default:
-      return String(source);
+      return source;
   }
 };
 const getLink = (rel, pages) => {
@@ -24,6 +25,12 @@ const getLink = (rel, pages) => {
     return page.url;
   }
   return '';
+};
+
+
+const pushOptions = (options = {}) => {
+  const locationWithOptions = mergeLocation(hashHistory.getCurrentLocation(), options);
+  hashHistory.push(locationWithOptions);
 };
 
 const mergeLocation = (location = {}, options = {}) => {
@@ -50,6 +57,7 @@ const createGithubQ = query => querystring(query, '&', '+');
 const parseLink = linkUrl => url.parse(linkUrl, true);
 
 export {
+  pushOptions,
   getAnckhor,
   createGithubQ,
   mergeLocation,

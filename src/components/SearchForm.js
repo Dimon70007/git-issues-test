@@ -1,25 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
-import { Combobox } from 'react-widgets';
 import { validateForm } from '../helpers';
-import RenderField from './RenderField';
+import { RenderField, RenderCombobox } from './';
 import { WidgetsLess } from '../styles';
-
-function renderCombobox({ input, invalid, reposLoaded, meta, ...rest }) {
-  return (<div>
-    <Combobox
-      {...input}
-      busy={!invalid && meta.active && !reposLoaded}
-      placeholder={input.name}
-      {...rest}
-    />
-    {meta.touched &&
-      ((meta.error && <span style={{ color: '#999' }}>{meta.error}</span>)
-          // || (warning && <span>{warning}</span>)
-      )}
-  </div>);
-}
 
 const SearchForm = (props) => {
   const {
@@ -47,7 +31,7 @@ const SearchForm = (props) => {
             />
             <Field
               name='repo'
-              component={renderCombobox}
+              component={RenderCombobox}
               data={invalid ? [] : repos}
               invalid={invalid}
               reposLoaded={reposLoaded}
@@ -67,6 +51,7 @@ const SearchForm = (props) => {
 };
 
 SearchForm.propTypes = {
+  reposLoaded: PropTypes.bool,
   pristine: PropTypes.bool,
   invalid: PropTypes.bool,
   submitting: PropTypes.bool,

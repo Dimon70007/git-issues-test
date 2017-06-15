@@ -6,9 +6,7 @@ import DateToLocale from './DateToLocale';
 
 const Comment = (props) => {
   const { className, item } = props;
-  const { created_at, body, user } = item;
-  // const { pathname, query } = parseLink(user.url);
-  // const linkPath = { pathname, query };
+  const { body, user } = item;
   const avatar = (
     <img
       src={user.avatar_url}
@@ -48,7 +46,6 @@ Comment.propTypes = {
       url: PropTypes.string.isRequired,
     }),
   }),
-  // pathname: PropTypes.string.isRequired,
 };
 
 export default Comment;

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { PATHNAME_PREFIX } from '../constants';
 
 class DisplayError extends React.Component {
   componentWillUpdate(nextProps) {
@@ -7,7 +8,7 @@ class DisplayError extends React.Component {
     const shouldDisplay = error.message;
     const handleError = () => {
       const notLoaded = () => {
-        pushOptions({ pathname: '/git-issues-test/' });
+        pushOptions({ pathname: PATHNAME_PREFIX });
       };
       const q = error.query && error.query.q;
       notify({

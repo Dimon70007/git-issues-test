@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { parseLink, getAnckhor } from '../helpers';
 import { PagesCss } from '../styles';
 
-const createLink = ({ pathname, query = {} }, page) => {
+const createLink = (pathname, query = {}, page) => {
   const pathnameWithQuery = { pathname, query };
   const anckhor = getAnckhor(page.rel);
   return (
@@ -19,7 +19,7 @@ const link = (page = {}, pathname) => {
     return null;
   }
   const { query } = parseLink(page.url);
-  return createLink({ pathname, query }, page);
+  return createLink(pathname, query, page);
 };
 // todo any links with number after first page
 
@@ -33,15 +33,18 @@ const Pages = ({ pages = {}, pathname = '' }) => {
     const step = 1;
     const maxLinksCount = 6;
     const { query } = parseLink(last.url || prev.url);
-    // min <...>...prevP currentP nextP...<...> max
+    // min <...>...prevP ... nextP...<...> max
     const min = first.page ? Number(first.page) : Number(next.page) - 1;
     const prevP = prev.page ? Number(prev.page) : min;
     const max = last.page ? Number(last.page) : Number(prev.page) + 1;
     const nextP = next.page ? Number(next.page) : max;
+
     const prevPrev = prevP - step;
     const nextNext = nextP + step;
+
     const hasMaxLinksCount = (left.length + right.length) >= maxLinksCount;
     const notEnaughPages = prevPrev <= min && nextNext >= max;
+
     if (hasMaxLinksCount || notEnaughPages) {
       const delimeter = (left.length && right.length) ? '...' : '';
       return { left, delimeter, right };
@@ -49,10 +52,10 @@ const Pages = ({ pages = {}, pathname = '' }) => {
     const prevPage = {};
     const nextPage = {};
     if (prevPrev > min) {
-      left.unshift(createLink({
+      left.unshift(createLink(
         pathname,
-        query: { ...query, page: prevPrev },
-      }, { rel: prevPrev }));
+        { ...query, page: prevPrev },
+      { rel: prevPrev }));
       prevPage.page = prevPrev;
       prevPage.rel = prevPrev;
     } else {
@@ -62,10 +65,10 @@ const Pages = ({ pages = {}, pathname = '' }) => {
     prevPage.url = prev.url;
 
     if (nextNext < max) {
-      right.push(createLink({
+      right.push(createLink(
         pathname,
-        query: { ...query, page: nextNext },
-      }, { rel: nextNext }));
+        { ...query, page: nextNext },
+        { rel: nextNext }));
       nextPage.page = nextNext;
       nextPage.rel = nextNext;
     } else {

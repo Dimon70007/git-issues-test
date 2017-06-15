@@ -10,6 +10,7 @@ const logger = createLogger();
 const configureStore = preloadedState => createStore(
   reducers,
   preloadedState,
+  // logger пока оставил, чтоб видеть баги (для обучения)
   applyMiddleware(thunk, logger, promisesMiddleware),
 );
 

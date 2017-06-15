@@ -6,8 +6,9 @@ import { getLink } from '../helpers';
 import { LoaderCss } from '../styles';
 
 /*
-  wrapper that will send request and
-  give the child component response with prefix
+  wrapper that will send request
+  and [optional] - load data's rest with prefix
+  and display loading info
  */
 class Fetcher extends React.Component {
   componentWillMount() {
@@ -37,7 +38,7 @@ class Fetcher extends React.Component {
       const newNextLink = getLink('next', nextLinks);
       if (newNextLink &&
           oldNextLink !== newNextLink) {
-        this.props.fetchRestCallback(newNextLink);
+        setTimeout(() => this.props.fetchRestCallback(newNextLink));
       }
     }
   }
@@ -47,17 +48,9 @@ class Fetcher extends React.Component {
   }
 
   render() {
-    const {
-      ChildComponent,
-      loaded,
-      links,
-      pathname } = this.props;
-    return (
-      <Loader loaded={loaded} className={LoaderCss.container}>
-        <ChildComponent
-          {...this.props} // inject items and all props to child
-        />
-      </Loader>
+    const { loaded, notDisplayLoader } = this.props;
+    return notDisplayLoader ? null : (
+      <Loader loaded={loaded} className={LoaderCss.container} />
     );
   }
 }
@@ -68,31 +61,20 @@ const page = PropTypes.shape({
 });
 
 Fetcher.propTypes = {
-  loaded: PropTypes.bool,
-  prefix: PropTypes.string.isRequired,
-  urlPath: PropTypes.string.isRequired,
-  ChildComponent: PropTypes.func.isRequired,
   fetchCallback: PropTypes.func.isRequired,
-  pathname: PropTypes.string.isRequired,
+  prefix: PropTypes.string.isRequired,
+  urlPath: PropTypes.string,
   fetchRestCallback: PropTypes.func, // [optional]
+  notDisplayLoader: PropTypes.bool, // [optional]
   urlQuery: PropTypes.object, // [optional]
   links: PropTypes.shape({  // does not need to pass
     next: page,
     last: page,
   }),
-  items: PropTypes.oneOfType([  // does not need to pass
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.number.isRequired,
-      }),
-    ),
-    PropTypes.object,
-  ]),
+  loaded: PropTypes.bool,   // does not need to pass
   shouldloadRest: PropTypes.bool, // does not need to pass
 };
 
-const getData = ({ body = [] }) => (Array.isArray(body) ?
-  body : body.items);
 const getLinks = ({ headers = { Link: {} } }) => headers.Link;
 
 const mapStateToProps = (state, ownProps) => {
@@ -100,11 +82,9 @@ const mapStateToProps = (state, ownProps) => {
   const ownState = state[prefix];
   return {
     loaded: ownState && !ownState.message,
-    items: ownState && getData(ownState),
     links: ownState && getLinks(ownState),
     shouldloadRest: !!ownProps.fetchRestCallback,
-    pathname: ownProps.pathname,
   };
 };
 
-export default connect(mapStateToProps /* , mapDispatchToProps*/)(Fetcher);
+export default connect(mapStateToProps)(Fetcher);

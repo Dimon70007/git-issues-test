@@ -4,14 +4,13 @@ import { hashHistory } from 'react-router';
 import NotificationSystem, { addNotification as notification } from 'reapop';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-// import { getFormValues } from 'redux-form';
 import theme from 'reapop-theme-wybo';
 import path from 'path';
 import spongeBob from '../imgs/sponge_bob.jpg';
-import { getLink, mergeLocation } from '../helpers';
+import { mergeLocation } from '../helpers';
 import { downloadRepos, postLoadRepos, clearError } from '../actions';
 import { PER_PAGE_LIST, REPOS_PREFIX, PATHNAME_PREFIX } from '../constants';
-import { SearchForm, Settings } from '../components';
+import { SearchForm, Settings, Fetcher } from '../components';
 import DisplayError from '../components/DisplayError';
 import { AppCss, SearchFormLeftCss } from '../styles';
 
@@ -47,20 +46,9 @@ class App extends React.PureComponent {
     this.fetchRepos = ::this.fetchRepos;
   }
 
-  componentWillUpdate(nextProps) {
-  //  postloading others pages for repos
-    const oldNextLink = getLink('next', this.props.pages);
-    const newNextLink = getLink('next', nextProps.pages);
-    if (newNextLink && oldNextLink !== newNextLink) {
-      setTimeout(() => this.props.fetchReposRest(newNextLink));
-    }
-  }
-
   fetchRepos(owner) {
     if (owner) {
-      const gitPath = path.resolve(
-        'search/repositories',
-      );
+      const gitPath = '/search/repositories';
       const query = {
         q: `user:${owner}`,
         sort: 'stars',
@@ -68,12 +56,13 @@ class App extends React.PureComponent {
       };
       this.props.fetchRepos(gitPath, query);
     } else {
-      console.log('Fetching repos for user: ', owner, ' is strange');
+      console.log('Something went wrong... Fetching repos for user: ', owner, ' is strange');
     }
   }
 
   render() {
     const {
+      fetchReposRest,
       clearErr,
       perPage,
       repos: reposLoaded,
@@ -84,6 +73,7 @@ class App extends React.PureComponent {
     } = this.props;
     const repos = reposLoaded ?
       reposLoaded.map(repo => repo.name) : [];
+    const noop = () => {};
     return (
       <div className={AppCss.App}>
         <NotificationSystem
@@ -94,6 +84,13 @@ class App extends React.PureComponent {
           notify={notify}
           pushOptions={pushOptions}
           error={error}
+        />
+        <Fetcher
+          fetchCallback={noop}
+          urlPath={null} // disabling fetchCallback
+          prefix={REPOS_PREFIX}
+          fetchRestCallback={fetchReposRest}
+          notDisplayLoader
         />
         <div className={AppCss['App-sidebar']}>
           <img
@@ -123,11 +120,6 @@ class App extends React.PureComponent {
   }
 }
 
-const page = PropTypes.shape({
-  rel: PropTypes.string,
-  url: PropTypes.string,
-});
-
 App.propTypes = {
   repos: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
@@ -136,10 +128,6 @@ App.propTypes = {
   fetchRepos: PropTypes.func.isRequired,
   fetchReposRest: PropTypes.func.isRequired,
   perPage: PropTypes.number.isRequired,
-  pages: PropTypes.shape({
-    next: page,
-    last: page,
-  }),
   perPageList: PropTypes.arrayOf(PropTypes.number),
   error: PropTypes.shape({
     message: PropTypes.string,
@@ -157,9 +145,8 @@ const getRepos = (body = {}) => body.items;
 const getPages = (headers = { Link: {} }) => headers.Link;
 
 const mapStateToProps = (state, ownProps) => ({
-  // formValues: getFormValues('leftSearch')(state),
   pathname: ownProps.location && ownProps.location.pathname,
-  perPage: Number(ownProps.location && ownProps.location.query.per_page) || PER_PAGE_LIST[1],
+  perPage: (ownProps.location && Number(ownProps.location.query.per_page)) || PER_PAGE_LIST[1],
   perPageList: PER_PAGE_LIST,
   error: state.error,
   repos: state[REPOS_PREFIX] && getRepos(state[REPOS_PREFIX].body),
