@@ -30,10 +30,19 @@ const onValidData = (values) => {
       PATHNAME_PREFIX, 'repos', owner, repo, 'issues',
     );
     const query = {
-      q: 'is:open is:issue',
+      filter: 'state:open type:issue',
       // sort: 'stars',
       // per_page: '100',
     };
+    // const gitPath = path.resolve(
+    //   'search/issues',
+    // );
+    // const query = {
+    //   q: 'state:open type:issue',
+    //   repo: `${owner}/${repo}`,
+    //   // sort: 'stars',
+    //   // per_page: '100',
+    // };
     pushOptions({ pathname: gitPath, query });
   } else {
     console.log('Not handled values in App.js: ', values);
@@ -141,7 +150,7 @@ App.propTypes = {
   clearErr: PropTypes.func.isRequired,
 };
 
-const getRepos = (body = {}) => body.items;
+// const getRepos = (body = {}) => body.items;
 const getPages = (headers = { Link: {} }) => headers.Link;
 
 const mapStateToProps = (state, ownProps) => ({
@@ -149,7 +158,7 @@ const mapStateToProps = (state, ownProps) => ({
   perPage: (ownProps.location && Number(ownProps.location.query.per_page)) || PER_PAGE_LIST[1],
   perPageList: PER_PAGE_LIST,
   error: state.error,
-  repos: state[REPOS_PREFIX] && getRepos(state[REPOS_PREFIX].body),
+  repos: state[REPOS_PREFIX] && state[REPOS_PREFIX].body,
   pages: state[REPOS_PREFIX] && getPages(state[REPOS_PREFIX].headers),
 });
 

@@ -5,7 +5,7 @@ import { parseLink } from '../helpers';
 import IssueItemCss from '../styles/IssueItem.css';
 
 const IssueItem = (props) => {
-  const { number, created_at, title, url } = props.issue;
+  const { number, created_at, title, url, pull_request: pullRequest } = props.issue;
   const { pathname, query } = parseLink(url);
   const link = { pathname, query };
   const date = new Date(created_at);
@@ -18,10 +18,16 @@ const IssueItem = (props) => {
     minute: 'numeric',
     second: 'numeric',
   };
+  const typeIssue = pullRequest ? 'pull_request' : 'issue';
   return (
     <div className={IssueItemCss.container}>
       <Link to={link} >
-        <p>#{number} created_at: {date.toLocaleString('en', dateOptions)}</p>
+        <div className={IssueItemCss.type}>
+          <h4 className={IssueItemCss[typeIssue] || IssueItemCss.default}>
+            {typeIssue}!
+          </h4>
+        </div>
+        <p>#{number} created: {date.toLocaleString('en', dateOptions)} </p>
         <p>{title}</p>
       </Link>
     </div>

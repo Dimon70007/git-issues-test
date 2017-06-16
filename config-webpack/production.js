@@ -70,9 +70,9 @@ module.exports = Merge(CommonConfig({ publicPath }), {
             loader: 'image-webpack-loader',
             options: {
               progressive: true,
-              optimizationLevel: 7,
-              interlaced: false,
               pngquant: {
+                optimizationLevel: 7,
+                interlaced: false,
                 quality: '65-90',
                 speed: 4,
               },

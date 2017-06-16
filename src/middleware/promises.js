@@ -28,7 +28,7 @@ const middleware = store => next => (action) => {
     path,
     query,
     payload: {
-      body,
+      body: body.items || body,
       headers,
     },
   }), error => store.dispatch({

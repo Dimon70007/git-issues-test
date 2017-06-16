@@ -14,6 +14,7 @@
     inset 0 2px 5px rgba(255, 255, 255, 0.6),
     0 2px 0 rgba(0,0,0,0.1),
     inset 0 0 5px rgba(0,0,0,0.1);
+  position: relative;
 }
 .container a {
   text-decoration: none;
@@ -40,6 +41,7 @@
 
 .container:hover {
   background: rgba(180, 215, 236, 0.7);
+  /*border: rgba(0,0,0,0.1)*/
 
 }
 .container:active {
@@ -49,4 +51,29 @@
   box-shadow: inset 0 3px 10px 0 rgba(0,0,0,0.2),
     0 -2px 0 rgba(255,255,255,0.6),
     inset 0 2px 0 rgba(0,0,0,0.1);
+}
+
+.type {
+  position: absolute;
+  right: 10px;
+  top: -30px;
+}
+
+.pull_request {
+  display: inline-flex;
+  padding: 5px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgb(160, 195, 216);
+  color: #0a0;
+}
+
+.issue {
+  composes: pull_request;
+  color: #f00;
+}
+
+.default {
+  composes: pull_request;
+  color: rgb(160, 195, 216);
 }
