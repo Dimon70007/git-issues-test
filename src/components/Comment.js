@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactMarkdown from 'react-markdown';
 import CreateLink from './CreateHtmlLink';
 import DateToLocale from './DateToLocale';
+import MDRender from './MDRender';
 
 const Comment = (props) => {
   const { className, item } = props;
@@ -10,7 +10,7 @@ const Comment = (props) => {
   const avatar = (
     <img
       src={user.avatar_url}
-      width='40'
+      width='50'
       height='50'
       alt='avatar'
     />
@@ -29,7 +29,7 @@ const Comment = (props) => {
         {' commented '}
         <DateToLocale source={item.created_at} lang='en' />
       </h3>
-      <ReactMarkdown source={body} />
+      <MDRender html={body} className={className.markDown} />
     </div>
   );
 };

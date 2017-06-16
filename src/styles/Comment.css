@@ -1,8 +1,13 @@
+.avatar {
+  position:absolute;
+  left: -60px;
+  top: 20px;
+}
+
 .container {
   width: auto;
   height: auto;
   position: relative;
-  /*overflow: hidden;*/
   color: rgb(160, 195, 216);
   background: #fff;
   border: 1px solid rgb(180, 215, 236);
@@ -13,6 +18,7 @@
   border-radius: 5px 5px 10px 10px;
   text-align: left;
 }
+
 .container a {
   text-decoration: none;
   font-size: 1em;
@@ -34,13 +40,23 @@
   color: rgb(110, 145, 166);
   cursor:pointer;
   text-shadow: none;
-  transform: scale(1.2);
+  transform: scale(1.3);
 }
 
-.avatar {
-  position:absolute;
-  left: -60px;
-  top: 20px;
+.markDown pre,
+.markDown code {
+  background: #eee;
+  color: #222;
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  line-height: calc(1em + 5px);
+}
+
+.markDown pre {
+  overflow-x: auto;
+  margin: 20px;
+  border-radius: 4px;
 }
 
 .container::before {
