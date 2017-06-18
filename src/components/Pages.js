@@ -6,7 +6,7 @@ import { PagesCss } from '../styles';
 
 const createLink = (pathname, query = {}, page) => {
   const pathnameWithQuery = { pathname, query };
-  const anckhor = getAnckhor(page.rel);
+  const anckhor = getAnckhor(page.rel, query.page);
   return (
     <Link key={page.rel + query.page} to={pathnameWithQuery} >
       {anckhor}
@@ -33,7 +33,7 @@ const Pages = ({ pages = {}, pathname = '' }) => {
     const step = 1;
     const maxLinksCount = 6;
     const { query } = parseLink(last.url || prev.url);
-    // min <...>...prevP ... nextP...<...> max
+    // prevP ... nextP
     const min = first.page ? Number(first.page) : Number(next.page) - 1;
     const prevP = prev.page ? Number(prev.page) : min;
     const max = last.page ? Number(last.page) : Number(prev.page) + 1;
@@ -44,9 +44,8 @@ const Pages = ({ pages = {}, pathname = '' }) => {
 
     const hasMaxLinksCount = (left.length + right.length) >= maxLinksCount;
     const notEnaughPages = prevPrev <= min && nextNext >= max;
-
     if (hasMaxLinksCount || notEnaughPages) {
-      const delimeter = (left.length && right.length) ? '...' : '';
+      const delimeter = (next.page && prev.page) ? '...' : '';
       return { left, delimeter, right };
     }
     const prevPage = {};
@@ -58,11 +57,10 @@ const Pages = ({ pages = {}, pathname = '' }) => {
       { rel: prevPrev }));
       prevPage.page = prevPrev;
       prevPage.rel = prevPrev;
+      prevPage.url = prev.url;
     } else {
-      prevPage.page = min;
-      prevPage.rel = prev.rel;
+      prevPage.page = first.page;
     }
-    prevPage.url = prev.url;
 
     if (nextNext < max) {
       right.push(createLink(
@@ -71,11 +69,10 @@ const Pages = ({ pages = {}, pathname = '' }) => {
         { rel: nextNext }));
       nextPage.page = nextNext;
       nextPage.rel = nextNext;
+      nextPage.url = next.url;
     } else {
-      nextPage.page = max;
-      nextPage.rel = next.rel;
+      nextPage.page = last.page;
     }
-    nextPage.url = next.url;
     return generateLinks({ first, next: nextPage, prev: prevPage, last }, [...left], [...right]);
   };
 

@@ -4,15 +4,14 @@ import { hashHistory } from 'react-router';
 import validateForm from './validateForm';
 import mergeBody from './mergeBody';
 
-const getAnckhor = (source) => {
+const getAnckhor = (source, pageNum) => {
   const str = String(source).toLowerCase().trim();
   switch (str) {
     case 'first':
       return '<<';
     case 'prev':
-      return '<';
     case 'next':
-      return '>';
+      return `${pageNum}`;
     case 'last':
       return '>>';
     default:
