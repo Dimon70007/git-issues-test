@@ -1,12 +1,23 @@
 .container {
+  display: inline-flex;
+  width: calc(100% - 30px);
   background: rgba(68, 179, 246, 0.5);
   color: #fff;
   border-radius: 10px;
-  float: right;
+  text-align: right;
+  right: 20px;
   margin: 5px;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
+}
+.label {
+  background: #fff;
+  color: #555;
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  margin-right: 0;
 }
 
 .container select {
@@ -15,13 +26,14 @@
   background: rgba(68, 179, 246, 0.5);
   color: #fff;
   border: 1px solid rgba(255,255,255,0.5);
-  margin-left: 10px;
+  /*margin-left: 10px;*/
   border-radius: 5px;
 }
 .container option {
   appearance: none;
   font-size: 100%;
   }
+
 .container option:checked,
 .container select option:hover {
   background: rgb(68, 179, 246);

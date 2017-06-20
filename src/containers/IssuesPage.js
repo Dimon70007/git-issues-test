@@ -2,47 +2,50 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Loader from 'react-loader';
-import { IssuesList, Pages } from '../components';
-import { ISSUES_PREFIX } from '../constants';
+import { IssuesList, Pages, Fetcher, Settings } from '../components';
+import { pushOptions } from '../helpers';
+import { ISSUES_PREFIX, VISIBILITY_FILTER, PER_PAGE_LIST } from '../constants';
 import { downloadIssues } from '../actions';
-import { IssuesPageCss, LoaderCss } from '../styles';
+import { IssuesPageCss } from '../styles';
+
+const addQuery = (newQuery) => {
+  pushOptions({ query: newQuery });
+};
 
 class IssuesPage extends React.Component {
-  componentWillMount() {
-    const query = this.props.query;
-    const pathname = this.props.pathname;
-    this.getIssues(pathname, query);
+  constructor(props) {
+    super(props);
+    this.getIssues = ::this.getIssues;
   }
-
-  componentWillUpdate(nextProps) {
-    const nextSearch = nextProps.search;
-    const nextPath = nextProps.pathname;
-    const prevSearch = this.props.search;
-    const prevPath = this.props.pathname;
-    if (prevPath !== nextPath || prevSearch !== nextSearch) {
-      this.getIssues(nextPath, nextProps.query);
-    }
-  }
-
   getIssues(pathname, query) {
     this.props.loadIssues(pathname, query);
   }
 
   render() {
-    const { issues, message, error, pages, pathname } = this.props;
+    const { issues, message, error, pages, pathname, query, perPage, perPageList } = this.props;
     if (error.message) {
       return null;
     }
     const loaded = !message;
     const listIssues = loaded ? issues : [];
+    const pagination = listIssues.length ? (<Pages pages={pages} pathname={pathname} />) : null;
     return (
       <div className={IssuesPageCss.container}>
-        <Loader loaded={loaded} className={LoaderCss.container}>
-          <IssuesList pathname={pathname}>
-            {listIssues}
-          </IssuesList>
-        </Loader>
+        <Fetcher
+          prefix={ISSUES_PREFIX}
+          fetchCallback={this.getIssues}
+          urlPath={pathname}
+          urlQuery={query}
+        />
+        <Settings
+          perPage={perPage}
+          perPageList={perPageList}
+          onPerPageChange={addQuery}
+        />
+        {pagination}
+        <IssuesList pathname={pathname}>
+          {listIssues}
+        </IssuesList>
         <Pages pages={pages} pathname={pathname} />
       </div>
     );
@@ -68,27 +71,31 @@ IssuesPage.propTypes = {
     first: page,
     last: page,
   }),
-  search: PropTypes.string.isRequired,
+  // search: PropTypes.string.isRequired,
   query: PropTypes.object.isRequired,
   message: PropTypes.string,
   error: PropTypes.object,
   pathname: PropTypes.string.isRequired,
   loadIssues: PropTypes.func.isRequired,
+  perPage: PropTypes.number.isRequired,
+  perPageList: PropTypes.arrayOf(PropTypes.number),
 };
 
 const getPages = (headers = { Link: {} }) => headers.Link;
-
+const filteredIssues = ({ body = [] }, filters = []) =>
+  body.filter(item => filters.reduce((acc, filt) => acc && filt(item), true));
 const mapStateToProps = (state, ownProps) => ({
-  issues: state[ISSUES_PREFIX].body,
+  issues: filteredIssues(state[ISSUES_PREFIX], state[VISIBILITY_FILTER]),
   error: state.error,
   message: state[ISSUES_PREFIX].message,
   pages: getPages(state[ISSUES_PREFIX].headers),
   pathname: ownProps.location.pathname,
-  search: ownProps.location.search,
+  // search: ownProps.location.search,
   query: ownProps.location.query,
   params: ownProps.location,
+  perPage: (ownProps.location && Number(ownProps.location.query.per_page)) || PER_PAGE_LIST[1],
+  perPageList: PER_PAGE_LIST,
 });
-
 
 const mapDispatchToProps = dispatch => ({
   loadIssues: bindActionCreators(downloadIssues, dispatch),

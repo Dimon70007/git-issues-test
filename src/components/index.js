@@ -10,8 +10,10 @@ import CreateHtmlLink from './CreateHtmlLink';
 import Fetcher from './Fetcher';
 import CommentsData from './CommentsData';
 import RenderCombobox from './RenderCombobox';
+import FilterComponent from './FilterComponent';
 
 export {
+  FilterComponent,
   CommentsData,
   Fetcher,
   List,

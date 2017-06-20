@@ -11,8 +11,10 @@ import WidgetsLess from './Widgets.less';
 import CommentCss from './Comment.css';
 import ListCss from './List.css';
 import IssuePageCss from './IssuePage.css';
+import FilterComponentCss from './FilterComponent.css';
 
 export {
+  FilterComponentCss,
   IssuePageCss,
   CommentCss,
   ListCss,

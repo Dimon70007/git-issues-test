@@ -1,27 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { hashHistory } from 'react-router';
 import NotificationSystem, { addNotification as notification } from 'reapop';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import theme from 'reapop-theme-wybo';
 import path from 'path';
 import spongeBob from '../imgs/sponge_bob.jpg';
-import { mergeLocation } from '../helpers';
+import { pushOptions } from '../helpers';
 import { downloadRepos, postLoadRepos, clearError } from '../actions';
-import { PER_PAGE_LIST, REPOS_PREFIX, PATHNAME_PREFIX } from '../constants';
-import { SearchForm, Settings, Fetcher } from '../components';
+import { REPOS_PREFIX, PATHNAME_PREFIX } from '../constants';
+import { SearchForm, Fetcher } from '../components';
 import DisplayError from '../components/DisplayError';
 import { AppCss, SearchFormLeftCss } from '../styles';
-
-const pushOptions = (options = {}) => {
-  const locationWithOptions = mergeLocation(hashHistory.getCurrentLocation(), options);
-  hashHistory.push(locationWithOptions);
-};
-
-const addQuery = (newQuery) => {
-  pushOptions({ query: newQuery });
-};
 
 const onValidData = (values) => {
   const { owner, repo } = values;
@@ -73,9 +63,7 @@ class App extends React.PureComponent {
     const {
       fetchReposRest,
       clearErr,
-      perPage,
       repos: reposLoaded,
-      perPageList,
       children,
       notify,
       error,
@@ -117,11 +105,6 @@ class App extends React.PureComponent {
           />
         </div>
         <div className={AppCss['App-main']}>
-          <Settings
-            perPage={perPage}
-            perPageList={perPageList}
-            onPerPageChange={addQuery}
-          />
           {children}
         </div>
       </div>
@@ -136,8 +119,6 @@ App.propTypes = {
   children: PropTypes.node,
   fetchRepos: PropTypes.func.isRequired,
   fetchReposRest: PropTypes.func.isRequired,
-  perPage: PropTypes.number.isRequired,
-  perPageList: PropTypes.arrayOf(PropTypes.number),
   error: PropTypes.shape({
     message: PropTypes.string,
     path: PropTypes.oneOfType([
@@ -155,8 +136,6 @@ const getPages = (headers = { Link: {} }) => headers.Link;
 
 const mapStateToProps = (state, ownProps) => ({
   pathname: ownProps.location && ownProps.location.pathname,
-  perPage: (ownProps.location && Number(ownProps.location.query.per_page)) || PER_PAGE_LIST[1],
-  perPageList: PER_PAGE_LIST,
   error: state.error,
   repos: state[REPOS_PREFIX] && state[REPOS_PREFIX].body,
   pages: state[REPOS_PREFIX] && getPages(state[REPOS_PREFIX].headers),

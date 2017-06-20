@@ -14,7 +14,7 @@ const lessUseProd = [
     options: {
       modules: true,
       localIdentName: '[name]__[local]__[hash:base64:5]',
-      constLoaders: 1,
+      importLoaders: 1,
       sourceMap: true,
       '-minimize': true,
     },
@@ -78,7 +78,6 @@ module.exports = Merge(CommonConfig({ publicPath }), {
               },
             },
           },
-          // 'img-loader',
         ],
       },
       {

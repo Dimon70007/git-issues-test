@@ -3,6 +3,9 @@ import querystring from 'querystring';
 import { hashHistory } from 'react-router';
 import validateForm from './validateForm';
 import mergeBody from './mergeBody';
+import objectReduce from './objectReduce';
+import objToString from './objToString';
+import parseFilterOption from './parseFilterOption';
 
 const getAnckhor = (source, pageNum) => {
   const str = String(source).toLowerCase().trim();
@@ -56,6 +59,9 @@ const createGithubQ = query => querystring(query, '&', '+');
 const parseLink = linkUrl => url.parse(linkUrl, true);
 
 export {
+  parseFilterOption,
+  objToString,
+  objectReduce,
   pushOptions,
   getAnckhor,
   createGithubQ,

@@ -8,6 +8,11 @@ const POST_LOAD_ACTIONS = [
   '_POST_LOADED',
   '_POST_LOAD_FAILURE',
 ];
+const V_FILTER_ACTIONS = [
+  'APPLY_FILTER',
+  'CLEAR_FILTER',
+  'DROPDOWN_FILTER',
+];
 const PROMISE = 'PROMISE';
 const POST_LOAD_PROMISE = 'POST_LOAD_PROMISE';
 const ISSUES_PREFIX = 'ISSUES';
@@ -20,9 +25,28 @@ const CHANGE_PARAMS = 'CHANGE_PARAMS';
 const PER_PAGE_LIST = [10, 30, 45, 60, 75, 100];
 const CLEAR_ERROR = 'CLEAR_ERROR';
 const PATHNAME_PREFIX = '/'; // process.env.PUBLIC_URL; // '/git-issues-test/';
+const V_FILTER_STATE_CHANGE = 'V_FILTER_STATE_CHANGE';
+const V_FILTER_STATE = 'V_FILTER_STATE';
+const VISIBILITY_FILTER = 'VISIBILITY_FILTER';
 
+const AVAILABLE_FILTERS = [
+  'is:issue',
+  'is:pull_request',
+  'state:open',
+  'state:closed',
+  'body_includes:',
+  'number_includes:',
+  'title_includes:',
+  'author:', // user.login
+  'created_at:',
+];
 // console.log('PATHNAME_PREFIX ', PATHNAME_PREFIX);
 export {
+  VISIBILITY_FILTER,
+  V_FILTER_STATE,
+  V_FILTER_STATE_CHANGE,
+  AVAILABLE_FILTERS,
+  V_FILTER_ACTIONS,
   PATHNAME_PREFIX,
   CLEAR_ERROR,
   POST_LOAD_PROMISE,

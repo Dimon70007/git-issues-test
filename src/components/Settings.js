@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { SettingsCss } from '../styles';
+import FilterComponent from './FilterComponent';
+import SettingsCss from '../styles/Settings.css';
 
 const createOptions = numsList =>
   numsList.map(num =>
@@ -13,7 +14,8 @@ const Settings = (props) => {
   };
   return (
     <div className={SettingsCss.container}>
-      <label htmlFor='select'>
+      <FilterComponent />
+      <label htmlFor='select' className={SettingsCss.label} >
         elements on page
       </label>
       <select

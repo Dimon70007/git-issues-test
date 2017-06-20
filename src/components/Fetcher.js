@@ -64,9 +64,9 @@ Fetcher.propTypes = {
   fetchCallback: PropTypes.func.isRequired,
   prefix: PropTypes.string.isRequired,
   urlPath: PropTypes.string,
+  urlQuery: PropTypes.object, // [optional]
   fetchRestCallback: PropTypes.func, // [optional]
   notDisplayLoader: PropTypes.bool, // [optional]
-  urlQuery: PropTypes.object, // [optional]
   links: PropTypes.shape({  // does not need to pass
     next: page,
     last: page,

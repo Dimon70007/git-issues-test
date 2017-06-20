@@ -27,10 +27,6 @@
   transition-delay: 1.5S;
 }
 
-/* state */
-.header {
-}
-
 .open {
   display: inline-flex;
   padding: 5px;
