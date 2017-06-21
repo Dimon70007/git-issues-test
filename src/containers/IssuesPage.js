@@ -26,9 +26,10 @@ class IssuesPage extends React.Component {
     if (error.message) {
       return null;
     }
-    const loaded = !message;
-    const listIssues = loaded ? issues : [];
-    const pagination = listIssues.length ? (<Pages pages={pages} pathname={pathname} />) : null;
+    const loaded = !message && issues;
+    const pagination = loaded && (<Pages pages={pages} pathname={pathname} />);
+    const first = loaded && loaded[0];
+    const availableKeys = first && Object.keys(first);
     return (
       <div className={IssuesPageCss.container}>
         <Fetcher
@@ -38,13 +39,14 @@ class IssuesPage extends React.Component {
           urlQuery={query}
         />
         <Settings
+          availableKeys={availableKeys}
           perPage={perPage}
           perPageList={perPageList}
           onPerPageChange={addQuery}
         />
         {pagination}
         <IssuesList pathname={pathname}>
-          {listIssues}
+          {loaded || []}
         </IssuesList>
         <Pages pages={pages} pathname={pathname} />
       </div>

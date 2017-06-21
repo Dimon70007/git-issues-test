@@ -1,15 +1,17 @@
-.container {
-  display: inline-flex;
+.main {
   width: calc(100% - 30px);
   background: rgba(68, 179, 246, 0.5);
   color: #fff;
-  border-radius: 10px;
   text-align: right;
-  right: 20px;
+  border-radius: 10px;
   margin: 5px;
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.container {
+  display: inline-flex;
 }
 .label {
   background: #fff;
