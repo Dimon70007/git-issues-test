@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { IssuesList, Pages, Fetcher, Settings } from '../components';
 import { pushOptions } from '../helpers';
 import { ISSUES_PREFIX, VISIBILITY_FILTER, PER_PAGE_LIST } from '../constants';
-import { downloadIssues } from '../actions';
+import { downloadIssues, postLoadIssues } from '../actions';
 import { IssuesPageCss } from '../styles';
 
 const addQuery = (newQuery) => {
@@ -16,13 +16,39 @@ class IssuesPage extends React.Component {
   constructor(props) {
     super(props);
     this.getIssues = ::this.getIssues;
+    this.getIssuesRest = ::this.getIssuesRest;
+    this.shouldLoadRest = false;
+    this.countLoadsRest = 0;
   }
-  getIssues(pathname, query) {
-    this.props.loadIssues(pathname, query);
+
+  componentWillReceiveProps(nextProps) {
+    const hasIssue = nextProps.issues && nextProps.issues[0];
+    this.shouldLoadRest = !hasIssue && this.countLoadsRest < 10;
+  }
+
+  getIssues(...params) {
+    this.props.loadIssues(...params);
+  }
+
+  getIssuesRest(...params) {
+    if (this.shouldLoadRest) {
+      this.countLoadsRest += 1;
+      console.log('loading rest');
+      // this.props.pLoadIssues(...params);
+    }
   }
 
   render() {
-    const { issues, message, error, pages, pathname, query, perPage, perPageList } = this.props;
+    const {
+      issues,
+      message,
+      error,
+      pages,
+      pathname,
+      query,
+      perPage,
+      perPageList,
+    } = this.props;
     if (error.message) {
       return null;
     }
@@ -30,6 +56,8 @@ class IssuesPage extends React.Component {
     const pagination = loaded && (<Pages pages={pages} pathname={pathname} />);
     const first = loaded && loaded[0];
     const availableKeys = first ? Object.keys(first) : [];
+    // console.log('shouldLoadRest ', this.shouldLoadRest);
+
     return (
       <div className={IssuesPageCss.container}>
         <Fetcher
@@ -37,6 +65,7 @@ class IssuesPage extends React.Component {
           fetchCallback={this.getIssues}
           urlPath={pathname}
           urlQuery={query}
+          // fetchRestCallback={this.getIssuesRest}
         />
         <Settings
           availableKeys={availableKeys}
@@ -53,6 +82,7 @@ class IssuesPage extends React.Component {
     );
   }
 }
+
 const page = PropTypes.shape({
   rel: PropTypes.string,
   url: PropTypes.string,
@@ -73,12 +103,12 @@ IssuesPage.propTypes = {
     first: page,
     last: page,
   }),
-  // search: PropTypes.string.isRequired,
   query: PropTypes.object.isRequired,
   message: PropTypes.string,
   error: PropTypes.object,
   pathname: PropTypes.string.isRequired,
   loadIssues: PropTypes.func.isRequired,
+  pLoadIssues: PropTypes.func.isRequired,
   perPage: PropTypes.number.isRequired,
   perPageList: PropTypes.arrayOf(PropTypes.number),
 };
@@ -92,7 +122,6 @@ const mapStateToProps = (state, ownProps) => ({
   message: state[ISSUES_PREFIX].message,
   pages: getPages(state[ISSUES_PREFIX].headers),
   pathname: ownProps.location.pathname,
-  // search: ownProps.location.search,
   query: ownProps.location.query,
   params: ownProps.location,
   perPage: (ownProps.location && Number(ownProps.location.query.per_page)) || PER_PAGE_LIST[1],
@@ -101,6 +130,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = dispatch => ({
   loadIssues: bindActionCreators(downloadIssues, dispatch),
+  pLoadIssues: bindActionCreators(postLoadIssues, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(IssuesPage);

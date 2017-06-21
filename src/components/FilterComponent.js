@@ -17,9 +17,11 @@ const FilterComponent = ({ filterInputValue = '', onFilterInputChange, changeFlt
   };
   const clearAction = () => '';
   const onInputChange = event => onFilterInputChange(event.target.value);
-  const addToInput = value => onFilterInputChange(`${filterInputValue} ${value}`);
+  const addToInput = (value) => {
+    const newStr = `${filterInputValue} ${value}`;
+    return onFilterInputChange(newStr.trim());
+  };
   const availableFilters = [...AVAILABLE_FILTERS, ...(availableKeys.map(item => `${item}:`))];
-
   return (
     <div className={`${WidgetsLess.wrap} ${FilterComponentCss.container}`}>
       <FilterHelper

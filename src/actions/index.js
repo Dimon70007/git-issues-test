@@ -5,6 +5,7 @@ import vFilter from './vFilter';
 import vFilterState from './vFilterState';
 
 const downloadIssues = download(ISSUES_PREFIX, LOAD_ACTIONS);
+const postLoadIssues = download(ISSUES_PREFIX, POST_LOAD_ACTIONS);
 const downloadIssue = download(PREFIX_ISSUE, LOAD_ACTIONS);
 const downloadRepos = download(REPOS_PREFIX, LOAD_ACTIONS);
 const downloadAny = prefix => download(prefix, LOAD_ACTIONS);
@@ -24,6 +25,7 @@ export {
   clearError,
   downloadIssue,
   downloadIssues,
+  postLoadIssues,
   downloadRepos,
   postLoadRepos,
 };

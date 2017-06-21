@@ -20,7 +20,7 @@ const onValidData = (values) => {
       PATHNAME_PREFIX, 'repos', owner, repo, 'issues',
     );
     const query = {
-      filter: 'state:open type:issue',
+      // q: 'state:open type:issue',
       // sort: 'stars',
       // per_page: '100',
     };

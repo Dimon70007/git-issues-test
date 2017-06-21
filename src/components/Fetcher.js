@@ -23,7 +23,7 @@ class Fetcher extends React.Component {
       urlPath: nextUrl,
       urlQuery: nextUrlQuery,
       links: nextLinks,
-      shouldloadRest,
+      fetchRestCallback,
     } = nextProps;
     const {
       urlPath: prevUrl,
@@ -33,12 +33,12 @@ class Fetcher extends React.Component {
     if ((nextUrl && nextUrl !== prevUrl) ||
         nextUrlQuery !== prevUrlQuery) {
       this.fetchData(nextUrl, nextUrlQuery);
-    } else if (shouldloadRest) {
+    } else if (fetchRestCallback) {
       const oldNextLink = getLink('next', prevLinks);
       const newNextLink = getLink('next', nextLinks);
       if (newNextLink &&
           oldNextLink !== newNextLink) {
-        setTimeout(() => this.props.fetchRestCallback(newNextLink));
+        setTimeout(() => fetchRestCallback(newNextLink), 10);
       }
     }
   }
@@ -72,7 +72,6 @@ Fetcher.propTypes = {
     last: page,
   }),
   loaded: PropTypes.bool,   // does not need to pass
-  shouldloadRest: PropTypes.bool, // does not need to pass
 };
 
 const getLinks = ({ headers = { Link: {} } }) => headers.Link;
@@ -83,7 +82,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     loaded: ownState && !ownState.message,
     links: ownState && getLinks(ownState),
-    shouldloadRest: !!ownProps.fetchRestCallback,
   };
 };
 

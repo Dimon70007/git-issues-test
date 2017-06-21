@@ -35,12 +35,12 @@ const AVAILABLE_FILTERS = [
   'state:open',
   'state:closed',
   'title:part_of_text',
-  // 'number>num',
-  // 'number<num',
+  'number>num',
+  'number<num',
   'author:name_or_partOfName', // user.login
   'created_at:YYYY-MM-DDTHH-MM',
 ];
-// console.log('PATHNAME_PREFIX ', PATHNAME_PREFIX);
+
 export {
   VISIBILITY_FILTER,
   V_FILTER_STATE,
