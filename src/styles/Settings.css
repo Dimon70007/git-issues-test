@@ -5,13 +5,14 @@
   text-align: right;
   border-radius: 10px;
   margin: 5px;
-  padding: 5px;
+  padding: 10px;
   padding-left: 10px;
   padding-right: 10px;
 }
 
 .container {
   display: inline-flex;
+  text-align: left;
 }
 .label {
   background: #fff;

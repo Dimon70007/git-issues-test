@@ -30,15 +30,15 @@ const V_FILTER_STATE = 'V_FILTER_STATE';
 const VISIBILITY_FILTER = 'VISIBILITY_FILTER';
 
 const AVAILABLE_FILTERS = [
-  'is:issue',
-  'is:pull_request',
+  'type:issue',
+  'type:pull_request',
   'state:open',
   'state:closed',
-  'body_includes:',
-  'number_includes:',
-  'title_includes:',
-  'author:', // user.login
-  'created_at:',
+  'title:part_of_text',
+  // 'number>num',
+  // 'number<num',
+  'author:name_or_partOfName', // user.login
+  'created_at:YYYY-MM-DDTHH-MM',
 ];
 // console.log('PATHNAME_PREFIX ', PATHNAME_PREFIX);
 export {

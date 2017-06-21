@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { DropdownList } from 'react-widgets';
 
 const FilterHelper = ({ addValueToInput, availableKeys = [] }) => {
-  const addToInput = event => addValueToInput(event.target.value);
+  const clearHelper = () => '';
   return (
     <DropdownList
       data={availableKeys}
-      placeholder='add option'
-      onSelect={addToInput}
+      isRtl={false}
+      value='add option like prop:word1_word2'
+      onSelect={addValueToInput}
+      onChange={clearHelper}
     />
   );
 };

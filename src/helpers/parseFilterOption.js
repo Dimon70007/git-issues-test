@@ -1,22 +1,37 @@
 /*
+'type:issue',
+'type:pull_request',
+'state:open',
+'state:closed',
+'title:part_of_text_throw_lowdash_delimeter',
+'number>num',
+'number<num',
+'author:name_or_partOfName', // user.login
+'created_at:YYYY-MM-DDTHH-MM',
  * str: input filter's option as property:value
  * for example is:issue, state:open
  */
-const parseFilterOption = (str) => {
+const parseFilterOption = (str = '') => {
+  const mark = str.indexOf(/{:><}/);
+  console.log('mark ', mark);
+  switch (mark) {
+    default:
+      return parseStringValue(str);
+  }
+};
+
+const parseStringValue = (str) => {
   const [property, value] = str.toLowerCase().split(':');
-  // case /comments<.+/:
-  //   return item => item.comments < less;
-  // case /comments>.+/:
-  //   return item => item.comments > bigger;
-  // const [, bigger] = str.split('>');
-  // const [, less] = str.split('<');
+  const strValue = value ? value.replace('_', ' ') : '';
   switch (str) {
+    case 'author':
+      return (item => item.user.login === strValue || (String(item.user.login).includes(strValue)));
     case 'type:issue':
       return (item => !item.pull_request);
     case 'type:pull_request':
       return (item => !!item.pull_request);
     default:
-      return (item => item[property] === value || (String(item[property]).includes(value)));
+      return (item => item[property] === strValue || (String(item[property]).includes(strValue)));
   }
 };
 

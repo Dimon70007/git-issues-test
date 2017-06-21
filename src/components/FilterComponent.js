@@ -15,6 +15,7 @@ const FilterComponent = ({ filterInputValue = '', onFilterInputChange, changeFlt
       applyFilterAction(V_FILTER_ACTIONS[0]);
     }
   };
+  const clearAction = () => '';
   const onInputChange = event => onFilterInputChange(event.target.value);
   const addToInput = value => onFilterInputChange(`${filterInputValue} ${value}`);
   const availableFilters = [...AVAILABLE_FILTERS, ...(availableKeys.map(item => `${item}:`))];
@@ -31,15 +32,16 @@ const FilterComponent = ({ filterInputValue = '', onFilterInputChange, changeFlt
           type='text'
           name='filterInput'
           value={filterInputValue}
-          placeholder='prop:val otherProp:otherVal'
+          // placeholder='input param:val'
           onChange={onInputChange}
           onKeyPress={handleKeyPress}
         />
       </div>
       <DropdownList
         data={V_FILTER_ACTIONS}
-        defaultValue={'filter\'s actions'}
+        value={'choise action'}
         onSelect={applyFilterAction}
+        onChange={clearAction}
       />
     </div>
   );
