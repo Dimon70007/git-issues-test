@@ -17,7 +17,7 @@ const FilterComponent = ({ filterInputValue = '', onFilterInputChange, changeFlt
   };
   const onInputChange = event => onFilterInputChange(event.target.value);
   const addToInput = value => onFilterInputChange(`${filterInputValue} ${value}`);
-  const availableFilters = [...AVAILABLE_FILTERS, ...availableKeys.map(item => `${item}:`)];
+  const availableFilters = [...AVAILABLE_FILTERS, ...(availableKeys.map(item => `${item}:`))];
 
   return (
     <div className={`${WidgetsLess.wrap} ${FilterComponentCss.container}`}>

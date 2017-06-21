@@ -29,7 +29,7 @@ class IssuesPage extends React.Component {
     const loaded = !message && issues;
     const pagination = loaded && (<Pages pages={pages} pathname={pathname} />);
     const first = loaded && loaded[0];
-    const availableKeys = first && Object.keys(first);
+    const availableKeys = first ? Object.keys(first) : [];
     return (
       <div className={IssuesPageCss.container}>
         <Fetcher
